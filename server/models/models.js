@@ -124,8 +124,8 @@ const Credit = sequelize.define('credits', {
   creditName: { type: DataTypes.STRING, allowNull: false },
   creditLimit: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     validate: {
-      notNull: true,
       min: 1000,
       max: 100000,
     },
@@ -171,8 +171,8 @@ const CreditCardInfo = sequelize.define('credit_cards_info', {
   },
   expiresDate: {
     type: DataTypes.DATEONLY,
+    allowNull: false,
     validate: {
-      notNull: true,
       isAfter: new Date(),
     },
   },
@@ -401,3 +401,116 @@ const OfferInfo = sequelize.define('user_person', {
   offerConfirmed: { type: DataTypes.BOOLEAN, allowNull: false },
   offerDescription: { type: DataTypes.STRING, defaultValue: 'none' },
 });
+
+UserAccount.hasOne(UserPerson);
+UserPerson.belongsTo(UserAccount);
+
+UserPerson.hasMany(AccountFilling);
+AccountFilling.belongsTo(UserPerson);
+
+UserPerson.hasMany(Credit);
+Credit.belongsTo(UserPerson);
+
+UserPerson.hasMany(OnlinePayment);
+OnlinePayment.belongsTo(UserPerson);
+
+OnlinePayment.hasOne(OnlinePaymentInfo, { as: 'PaymentInfo' });
+OnlinePaymentInfo.belongsTo(OnlinePayment);
+
+UserPerson.hasMany(Bill);
+Bill.belongsTo(UserPerson);
+
+Bill.hasOne(BillInfo);
+BillInfo.belongsTo(Bill);
+
+UserPerson.hasMany(Tax);
+Tax.belongsTo(UserPerson);
+
+Tax.hasOne(TaxInfo);
+TaxInfo.belongsTo(Tax);
+
+UserPerson.hasMany(Fees);
+Fees.belongsTo(UserPerson);
+
+Fees.hasOne(FeesInfo);
+FeesInfo.belongsTo(Fees);
+
+UserPerson.hasMany(UserMessage);
+UserMessage.belongsTo(UserPerson);
+
+UserAccount.hasMany(BankAccount);
+BankAccount.belongsTo(UserAccount);
+
+BankAccount.hasOne(BankAccountBalance, { as: 'BanlBalance' });
+BankAccountBalance.belongsTo(BankAccount);
+
+BankAccount.hasMany(CreditCard);
+CreditCard.belongsTo(BankAccount);
+
+CreditCard.hasOne(CreditCardInfo, { as: 'CardInfo' });
+CreditCardInfo.belongsTo(CreditCard);
+
+CreditCardInfo.hasMany(CreditCardType, { as: 'CardType' });
+CreditCardType.belongsTo(CreditCardInfo);
+
+UserAccount.hasMany(Company);
+Company.belongsTo(UserAccount);
+
+Company.hasMany(CompanyInfo);
+CompanyInfo.belongsTo(Company);
+
+Company.hasMany(Partner);
+Partner.belongsTo(Company);
+
+Company.hasMany(Activitie);
+Activitie.belongsTo(Company);
+
+Company.hasMany(Benefit);
+Benefit.belongsTo(Company);
+
+Company.hasMany(Offer);
+Offer.belongsTo(Company);
+
+Offer.hasOne(OfferInfo);
+OfferInfo.belongsTo(Offer);
+
+Transaction.hasOne(TransactionInfo);
+TransactionInfo.belongsTo(Transaction);
+
+UserPerson.hasMany(Transaction);
+Transaction.belongsTo(UserPerson);
+
+Company.hasMany(Transaction);
+Transaction.belongsTo(Company);
+
+module.exports = {
+  UserInfo,
+  Faq,
+  UserAccount,
+  UserMessage,
+  UserPerson,
+  Company,
+  CompanyInfo,
+  Bill,
+  BillInfo,
+  Tax,
+  TaxInfo,
+  Fees,
+  FeesInfo,
+  OnlinePayment,
+  OnlinePaymentInfo,
+  Transaction,
+  TransactionInfo,
+  Partner,
+  Benefit,
+  Activitie,
+  Offer,
+  OfferInfo,
+  BankAccount,
+  BankAccountBalance,
+  CreditCard,
+  CreditCardInfo,
+  CreditCardType,
+  AccountFilling,
+  Credit,
+};
