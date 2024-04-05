@@ -17,6 +17,7 @@ app.use(express.static(path.resolve(__dirname, 'static', 'partners')));
 app.use(express.static(path.resolve(__dirname, 'static', 'activities')));
 app.use(express.static(path.resolve(__dirname, 'static', 'benefits')));
 app.use(express.static(path.resolve(__dirname, 'static', 'offers')));
+app.use(express.static(path.resolve(__dirname, 'static', 'accounts')));
 app.use(fileUpload({}));
 
 app.use('/api', router);

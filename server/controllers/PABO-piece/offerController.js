@@ -11,12 +11,12 @@ class OfferController {
     let fileName = `${uuid.v4()}.png`;
 
     const offerInfo = {
-      type: 'lol',
-      price: 123,
-      comission: 12,
-      longterm: true,
+      type: 'test',
+      price: 123333333,
+      comission: 11,
+      longterm: false,
       confirmed: false,
-      description: 'sadasdasdasd',
+      description: 'test',
     };
 
     offerImg.mv(
@@ -43,14 +43,14 @@ class OfferController {
 
     return res.json(offer);
   }
-  async getOffers(req, res) {
+  async getOffer(req, res) {
     const { id_offer } = req.params;
     const offers = await Offer.findOne({
       include: { model: OfferInfo, where: { offerId: id_offer } },
     });
     return res.json(offers);
   }
-  async getOffer(req, res) {
+  async getOffers(req, res) {
     const offer = await Offer.findAll();
     return res.json(offer);
   }

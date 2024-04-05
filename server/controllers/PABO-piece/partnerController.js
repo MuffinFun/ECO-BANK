@@ -13,10 +13,10 @@ class PartnerController {
       let { availablePartnerName, availablePartnerDescription } = req.body;
       let { availablePartnerImg } = req.files;
 
-      let fileName = `${uuid.v4()}.png`;
+      let fileName = `partner__${uuid.v4()}.png`;
 
       availablePartnerImg.mv(
-        path.resolve(__dirname, '..', '..', 'static', 'partners', fileName)
+        path.resolve(__dirname, '..', '..', 'static', 'partners', `${fileName}`)
       );
 
       const newPartner = await AvailablePartner.create({
@@ -32,13 +32,11 @@ class PartnerController {
   }
   async addPartner(req, res) {
     try {
-      const { targetId, userId } = req.body;
-
-      console.log(targetId);
+      const { id_target, id_user } = req.params;
 
       const { availablePartnerName, availablePartnerImg } =
         await AvailablePartner.findOne({
-          where: { id_availablePartner: targetId },
+          where: { id_availablePartner: id_target },
         });
 
       const userPartner = await Partner.create({
@@ -48,7 +46,7 @@ class PartnerController {
 
       PersonPartner.create({
         partnerIdPartner: userPartner.id_partner,
-        userPersonIdPerson: userId,
+        userPersonIdPerson: id_user,
       });
 
       return res.json(userPartner);
