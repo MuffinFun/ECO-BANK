@@ -34,6 +34,39 @@ const Faq = sequelize.define('faq', {
   },
 });
 
+const AvailablePartner = sequelize.define('available_partners', {
+  id_availablePartner: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  availablePartnerName: { type: DataTypes.STRING, allowNull: false },
+  availablePartnerImg: { type: DataTypes.STRING, allowNull: false },
+  availablePartnerDescription: { type: DataTypes.STRING, allowNull: false },
+});
+
+const AvailableActivitie = sequelize.define('available_activities', {
+  id_availableActivitie: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  possibelActivitieName: { type: DataTypes.STRING, allowNull: false },
+  possibelActivitieImg: { type: DataTypes.STRING, allowNull: false },
+  possibelActivitieDescription: { type: DataTypes.STRING, allowNull: false },
+});
+
+const AvailableBenefit = sequelize.define('available_benefits', {
+  id_availableBenefit: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
+  },
+  availableBenefitName: { type: DataTypes.STRING, allowNull: false },
+  availableBenefitImg: { type: DataTypes.STRING, allowNull: false },
+  availableBenefitDescription: { type: DataTypes.STRING, allowNull: false },
+});
+
 const UserAccount = sequelize.define('user_accounts', {
   id_account: {
     type: DataTypes.INTEGER,
@@ -173,7 +206,7 @@ const CreditCardInfo = sequelize.define('credit_cards_info', {
     type: DataTypes.DATEONLY,
     allowNull: false,
     validate: {
-      isAfter: new Date(),
+      isAfter: DataTypes.NOW,
     },
   },
   cvv: {
@@ -377,7 +410,7 @@ const Offer = sequelize.define('offers', {
   offerName: { type: DataTypes.STRING, allowNull: false },
   offerImg: { type: DataTypes.STRING, allowNull: false },
 });
-const OfferInfo = sequelize.define('user_person', {
+const OfferInfo = sequelize.define('offer_info', {
   id_offerInfo: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -402,88 +435,147 @@ const OfferInfo = sequelize.define('user_person', {
   offerDescription: { type: DataTypes.STRING, defaultValue: 'none' },
 });
 
-UserAccount.hasOne(UserPerson);
-UserPerson.belongsTo(UserAccount);
+const PersonPartner = sequelize.define(
+  'person_partner',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
+const PersonActivitie = sequelize.define(
+  'person_activitie',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
+const PersonBenefit = sequelize.define(
+  'person_benefit',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
 
-UserPerson.hasMany(AccountFilling);
-AccountFilling.belongsTo(UserPerson);
+const CompanyPartner = sequelize.define(
+  'company_partner',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
+const CompanyActivitie = sequelize.define(
+  'company_activitie',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
+const CompanyBenefit = sequelize.define(
+  'company_benefit',
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+  },
+  { createdAt: false }
+);
 
-UserPerson.hasMany(Credit);
-Credit.belongsTo(UserPerson);
+UserAccount.hasOne(UserPerson, { foreignKey: 'accountId' });
+UserPerson.belongsTo(UserAccount, { foreignKey: 'accountId' });
 
-UserPerson.hasMany(OnlinePayment);
-OnlinePayment.belongsTo(UserPerson);
+UserPerson.hasMany(AccountFilling), { foreignKey: 'personFillId' };
+AccountFilling.belongsTo(UserPerson, { foreignKey: 'personFillId' });
 
-OnlinePayment.hasOne(OnlinePaymentInfo, { as: 'PaymentInfo' });
-OnlinePaymentInfo.belongsTo(OnlinePayment);
+UserPerson.hasMany(Credit, { foreignKey: 'personCreditId' });
+Credit.belongsTo(UserPerson, { foreignKey: 'personCreditId' });
 
-UserPerson.hasMany(Bill);
-Bill.belongsTo(UserPerson);
+UserPerson.hasMany(OnlinePayment, { foreignKey: 'personPaymentId' });
+OnlinePayment.belongsTo(UserPerson, { foreignKey: 'personPaymentId' });
 
-Bill.hasOne(BillInfo);
-BillInfo.belongsTo(Bill);
+OnlinePayment.hasOne(OnlinePaymentInfo, { foreignKey: 'paymentId' });
+OnlinePaymentInfo.belongsTo(OnlinePayment, { foreignKey: 'paymentId' });
 
-UserPerson.hasMany(Tax);
-Tax.belongsTo(UserPerson);
+UserPerson.hasMany(Bill, { foreignKey: 'personBillId' });
+Bill.belongsTo(UserPerson, { foreignKey: 'personBillId' });
 
-Tax.hasOne(TaxInfo);
-TaxInfo.belongsTo(Tax);
+Bill.hasOne(BillInfo, { foreignKey: 'billId' });
+BillInfo.belongsTo(Bill), { foreignKey: 'billId' };
 
-UserPerson.hasMany(Fees);
-Fees.belongsTo(UserPerson);
+UserPerson.hasMany(Tax, { foreignKey: 'personTaxId' });
+Tax.belongsTo(UserPerson, { foreignKey: 'personTaxId' });
 
-Fees.hasOne(FeesInfo);
-FeesInfo.belongsTo(Fees);
+Tax.hasOne(TaxInfo, { foreignKey: 'taxId' });
+TaxInfo.belongsTo(Tax, { foreignKey: 'taxId' });
 
-UserPerson.hasMany(UserMessage);
-UserMessage.belongsTo(UserPerson);
+UserPerson.hasMany(Fees, { foreignKey: 'personFeesId' });
+Fees.belongsTo(UserPerson, { foreignKey: 'personFeesId' });
 
-UserAccount.hasMany(BankAccount);
-BankAccount.belongsTo(UserAccount);
+Fees.hasOne(FeesInfo, { foreignKey: 'feesId' });
+FeesInfo.belongsTo(Fees, { foreignKey: 'feesId' });
 
-BankAccount.hasOne(BankAccountBalance, { as: 'BanlBalance' });
-BankAccountBalance.belongsTo(BankAccount);
+UserPerson.hasMany(UserMessage, { foreignKey: 'personMessageId' });
+UserMessage.belongsTo(UserPerson, { foreignKey: 'personMessageId' });
 
-BankAccount.hasMany(CreditCard);
-CreditCard.belongsTo(BankAccount);
+UserAccount.hasMany(BankAccount, { foreignKey: 'userBankId' });
+BankAccount.belongsTo(UserAccount, { foreignKey: 'userBankId' });
 
-CreditCard.hasOne(CreditCardInfo, { as: 'CardInfo' });
-CreditCardInfo.belongsTo(CreditCard);
+BankAccount.hasOne(BankAccountBalance), { foreignKey: 'bankId' };
+BankAccountBalance.belongsTo(BankAccount, { foreignKey: 'bankBId' });
 
-CreditCardInfo.hasMany(CreditCardType, { as: 'CardType' });
-CreditCardType.belongsTo(CreditCardInfo);
+BankAccount.hasMany(CreditCard, { foreignKey: 'bankCardId' });
+CreditCard.belongsTo(BankAccount), { foreignKey: 'bankCardId' };
 
-UserAccount.hasMany(Company);
-Company.belongsTo(UserAccount);
+CreditCard.hasOne(CreditCardInfo, { foreignKey: 'cardId' });
+CreditCardInfo.belongsTo(CreditCard, { foreignKey: 'cardId' });
 
-Company.hasMany(CompanyInfo);
-CompanyInfo.belongsTo(Company);
+CreditCardInfo.hasMany(CreditCardType, { foreignKey: 'cardInfoId' });
+CreditCardType.belongsTo(CreditCardInfo, { foreignKey: 'cardInfoId' });
 
-Company.hasMany(Partner);
-Partner.belongsTo(Company);
+UserAccount.hasMany(Company, { foreignKey: 'userCompanyId' });
+Company.belongsTo(UserAccount, { foreignKey: 'userCompanyId' });
 
-Company.hasMany(Activitie);
-Activitie.belongsTo(Company);
+Company.hasMany(CompanyInfo, { foreignKey: 'companyId' });
+CompanyInfo.belongsTo(Company, { foreignKey: 'companyId' });
 
-Company.hasMany(Benefit);
-Benefit.belongsTo(Company);
+Company.hasMany(Offer, { foreignKey: 'companyOfferId' });
+Offer.belongsTo(Company, { foreignKey: 'companyOfferId' });
 
-Company.hasMany(Offer);
-Offer.belongsTo(Company);
+UserPerson.hasMany(Offer, { foreignKey: 'personOfferId' });
+Offer.belongsTo(UserPerson, { foreignKey: 'personOfferId' });
 
-Offer.hasOne(OfferInfo);
-OfferInfo.belongsTo(Offer);
+Offer.hasOne(OfferInfo, { foreignKey: 'offerId' });
+OfferInfo.belongsTo(Offer, { foreignKey: 'offerId' });
 
-Transaction.hasOne(TransactionInfo);
-TransactionInfo.belongsTo(Transaction);
+Transaction.hasOne(TransactionInfo, { foreignKey: 'transactionId' });
+TransactionInfo.belongsTo(Transaction, { foreignKey: 'transactionId' });
 
-UserPerson.hasMany(Transaction);
-Transaction.belongsTo(UserPerson);
+UserPerson.hasMany(Transaction, { foreignKey: 'personTransactionId' });
+Transaction.belongsTo(UserPerson, { foreignKey: 'personTransactionId' });
 
-Company.hasMany(Transaction);
-Transaction.belongsTo(Company);
+Company.hasMany(Transaction, { foreignKey: 'companyTransactionId' });
+Transaction.belongsTo(Company, { foreignKey: 'companyTransactionId' });
+
+Partner.belongsToMany(UserPerson, { through: PersonPartner });
+UserPerson.belongsToMany(Partner, { through: PersonPartner });
+
+Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
+UserPerson.belongsToMany(Activitie, { through: PersonActivitie });
+
+Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
+UserPerson.belongsToMany(Benefit, { through: PersonBenefit });
+
+Partner.belongsToMany(Company, { through: CompanyPartner });
+Company.belongsToMany(Partner, { through: CompanyPartner });
+
+Activitie.belongsToMany(Company, { through: CompanyActivitie });
+Company.belongsToMany(Activitie, { through: CompanyActivitie });
+
+Benefit.belongsToMany(Company, { through: CompanyBenefit });
+Company.belongsToMany(Benefit, { through: CompanyBenefit });
 
 module.exports = {
+  AvailableActivitie,
+  AvailableBenefit,
+  AvailablePartner,
   UserInfo,
   Faq,
   UserAccount,
@@ -513,4 +605,5 @@ module.exports = {
   CreditCardType,
   AccountFilling,
   Credit,
+  PersonPartner,
 };
