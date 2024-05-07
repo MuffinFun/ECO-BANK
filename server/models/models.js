@@ -2,7 +2,7 @@ const sequelize = require('../db');
 const { DataTypes } = require('sequelize');
 
 const UserInfo = sequelize.define('user_info', {
-  id_userInfo: {
+  id_user_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
@@ -12,7 +12,7 @@ const UserInfo = sequelize.define('user_info', {
     allowNull: false,
     validate: { len: [7, 20] },
   },
-  checkWord: {
+  check_word: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -24,47 +24,47 @@ const Faq = sequelize.define('faq', {
     primaryKey: true,
     autoIncrement: true,
   },
-  faqQuestion: {
+  faq_question: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  faqAnswer: {
+  faq_answer: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 });
 
 const AvailablePartner = sequelize.define('available_partners', {
-  id_availablePartner: {
+  id_available_partner: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  availablePartnerName: { type: DataTypes.STRING, allowNull: false },
-  availablePartnerImg: { type: DataTypes.STRING, allowNull: false },
-  availablePartnerDescription: { type: DataTypes.STRING, allowNull: false },
+  available_partner_name: { type: DataTypes.STRING, allowNull: false },
+  available_partner_img: { type: DataTypes.STRING, allowNull: false },
+  available_partner_description: { type: DataTypes.STRING, allowNull: false },
 });
 
 const AvailableActivitie = sequelize.define('available_activities', {
-  id_availableActivitie: {
+  id_available_activitie: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  possibelActivitieName: { type: DataTypes.STRING, allowNull: false },
-  possibelActivitieImg: { type: DataTypes.STRING, allowNull: false },
-  possibelActivitieDescription: { type: DataTypes.STRING, allowNull: false },
+  possibe_activitie_name: { type: DataTypes.STRING, allowNull: false },
+  possibe_activitie_img: { type: DataTypes.STRING, allowNull: false },
+  possibe_activitie_description: { type: DataTypes.STRING, allowNull: false },
 });
 
 const AvailableBenefit = sequelize.define('available_benefits', {
-  id_availableBenefit: {
+  id_available_benefit: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  availableBenefitName: { type: DataTypes.STRING, allowNull: false },
-  availableBenefitImg: { type: DataTypes.STRING, allowNull: false },
-  availableBenefitDescription: { type: DataTypes.STRING, allowNull: false },
+  available_benefit_name: { type: DataTypes.STRING, allowNull: false },
+  available_benefit_img: { type: DataTypes.STRING, allowNull: false },
+  available_benefit_description: { type: DataTypes.STRING, allowNull: false },
 });
 
 const UserAccount = sequelize.define('user_accounts', {
@@ -74,8 +74,8 @@ const UserAccount = sequelize.define('user_accounts', {
     autoIncrement: true,
   },
   name: { type: DataTypes.STRING, allowNull: false },
-  surName: { type: DataTypes.STRING, allowNull: false },
-  thirdName: { type: DataTypes.STRING, defaultValue: 'none' },
+  sur_name: { type: DataTypes.STRING, allowNull: false },
+  third_name: { type: DataTypes.STRING, defaultValue: 'none' },
   img: { type: DataTypes.STRING, allowNull: false },
   email: { type: DataTypes.STRING, allowNull: false, unique: true },
   role: { type: DataTypes.STRING, defaultValue: 'USER' },
@@ -87,19 +87,23 @@ const UserPerson = sequelize.define('user_persons', {
     primaryKey: true,
     autoIncrement: true,
   },
-  userSex: { type: DataTypes.STRING, defaultValue: 'none' },
-  userAge: { type: DataTypes.INTEGER, allowNull: false, validate: { min: 16 } },
-  userHomeAdress: { type: DataTypes.STRING, allowNull: false },
-  userPhoneNumber: {
+  user_sex: { type: DataTypes.STRING, defaultValue: 'none' },
+  user_age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: { min: 16 },
+  },
+  user_home_adress: { type: DataTypes.STRING, allowNull: false },
+  user_phone_number: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
     validate: { len: [11, 16] },
   },
-  workPlace: { type: DataTypes.STRING },
-  workIncome: { type: DataTypes.INTEGER, validate: { min: 1 } },
-  creditHistory: { type: DataTypes.STRING, defaultValue: 'unknown' },
-  creditCanConfirmed: { type: DataTypes.BOOLEAN, defaultValue: 'false' },
+  work_place: { type: DataTypes.STRING },
+  work_income: { type: DataTypes.INTEGER, validate: { min: 1 } },
+  credit_history: { type: DataTypes.STRING, defaultValue: 'unknown' },
+  credit_can_confirmed: { type: DataTypes.BOOLEAN, defaultValue: 'false' },
 });
 
 const Company = sequelize.define('companies', {
@@ -108,27 +112,27 @@ const Company = sequelize.define('companies', {
     primaryKey: true,
     autoIncrement: true,
   },
-  companyName: { type: DataTypes.STRING, allowNull: false },
+  company_name: { type: DataTypes.STRING, allowNull: false },
 });
 const CompanyInfo = sequelize.define('companies_info', {
-  id_companyInfo: {
+  id_company_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  companyPhoneNumber: {
+  company_phone_number: {
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
     validate: { len: [11, 16] },
   },
-  companyAdress: { type: DataTypes.STRING, allowNull: false },
-  countOfBuildings: {
+  company_adress: { type: DataTypes.STRING, allowNull: false },
+  count_of_buildings: {
     type: DataTypes.STRING,
     defaultValue: 1,
     validate: { min: 1 },
   },
-  companyPrice: {
+  company_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { min: 1 },
@@ -141,8 +145,8 @@ const AccountFilling = sequelize.define('fillings', {
     primaryKey: true,
     autoIncrement: true,
   },
-  fillName: { type: DataTypes.STRING, allowNull: false },
-  fillPercentage: {
+  fill_name: { type: DataTypes.STRING, allowNull: false },
+  fill_percentage: {
     type: DataTypes.INTEGER,
     defaultValue: 3,
     validate: { min: 3, max: 23 },
@@ -154,8 +158,8 @@ const Credit = sequelize.define('credits', {
     primaryKey: true,
     autoIncrement: true,
   },
-  creditName: { type: DataTypes.STRING, allowNull: false },
-  creditLimit: {
+  credit_name: { type: DataTypes.STRING, allowNull: false },
+  credit_limit: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
@@ -163,24 +167,24 @@ const Credit = sequelize.define('credits', {
       max: 100000,
     },
   },
-  creditSum: { type: DataTypes.INTEGER, validate: { min: 1 } },
+  credit_sum: { type: DataTypes.INTEGER, validate: { min: 1 } },
 });
 
 const BankAccount = sequelize.define('bank_accounts', {
-  id_bankAccount: {
+  id_bank_account: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  bankAccountName: { type: DataTypes.STRING, allowNull: false },
+  bank_account_name: { type: DataTypes.STRING, allowNull: false },
 });
 const BankAccountBalance = sequelize.define('bank_accounts_balance', {
-  id_bankBalance: {
+  id_bank_balance: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  totalBalance: {
+  total_balance: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
     validate: { min: 0 },
@@ -193,16 +197,16 @@ const CreditCard = sequelize.define('credit_cards', {
     primaryKey: true,
     autoIncrement: true,
   },
-  cardName: { type: DataTypes.STRING, defaultValue: 'Standart' },
-  cardImg: { type: DataTypes.STRING, allowNull: false },
+  card_name: { type: DataTypes.STRING, defaultValue: 'Standart' },
+  card_img: { type: DataTypes.STRING, allowNull: false },
 });
 const CreditCardInfo = sequelize.define('credit_cards_info', {
-  id_cardInfo: {
+  id_card_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  expiresDate: {
+  expires_date: {
     type: DataTypes.DATEONLY,
     allowNull: false,
     validate: {
@@ -223,13 +227,13 @@ const CreditCardInfo = sequelize.define('credit_cards_info', {
 });
 
 const CreditCardType = sequelize.define('cards_types', {
-  id_cardType: {
+  id_card_type: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  cardTypeName: { type: DataTypes.STRING, allowNull: false },
-  typeImg: { type: DataTypes.STRING, allowNull: false },
+  card_type_name: { type: DataTypes.STRING, allowNull: false },
+  type_img: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Bill = sequelize.define('bills', {
@@ -238,8 +242,8 @@ const Bill = sequelize.define('bills', {
     primaryKey: true,
     autoIncrement: true,
   },
-  billName: { type: DataTypes.STRING, allowNull: false },
-  billImg: { type: DataTypes.STRING, allowNull: false },
+  bill_name: { type: DataTypes.STRING, allowNull: false },
+  bill_img: { type: DataTypes.STRING, allowNull: false },
 });
 const BillInfo = sequelize.define('bills_info', {
   id_billInfo: {
@@ -247,14 +251,14 @@ const BillInfo = sequelize.define('bills_info', {
     primaryKey: true,
     autoIncrement: true,
   },
-  billPrice: {
+  bill_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { notNull: { msg: 'enter correct sum!' }, min: 1 },
   },
-  billAutopay: { type: DataTypes.BOOLEAN, defaultValue: false },
-  billCheckNum: { type: DataTypes.INTEGER, allowNull: false },
-  operationCardName: { type: DataTypes.STRING, allowNull: false },
+  bill_autopay: { type: DataTypes.BOOLEAN, defaultValue: false },
+  bill_checknum: { type: DataTypes.INTEGER, allowNull: false },
+  operation_card_name: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Tax = sequelize.define('tax', {
@@ -263,23 +267,23 @@ const Tax = sequelize.define('tax', {
     primaryKey: true,
     autoIncrement: true,
   },
-  taxName: { type: DataTypes.STRING, allowNull: false },
-  taxImg: { type: DataTypes.STRING, allowNull: false },
+  tax_name: { type: DataTypes.STRING, allowNull: false },
+  tax_img: { type: DataTypes.STRING, allowNull: false },
 });
 const TaxInfo = sequelize.define('tax_info', {
-  id_taxInfo: {
+  id_tax_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  taxPrice: {
+  tax_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { notNull: { msg: 'enter correct sum!' }, min: 1 },
   },
-  taxAutopay: { type: DataTypes.BOOLEAN, defaultValue: false },
-  taxCheckNum: { type: DataTypes.INTEGER, allowNull: false },
-  operationCardName: { type: DataTypes.STRING, allowNull: false },
+  tax_autopay: { type: DataTypes.BOOLEAN, defaultValue: false },
+  tax_checknum: { type: DataTypes.INTEGER, allowNull: false },
+  operation_card_name: { type: DataTypes.STRING, allowNull: false },
 });
 
 const Fees = sequelize.define('fees', {
@@ -288,8 +292,8 @@ const Fees = sequelize.define('fees', {
     primaryKey: true,
     autoIncrement: true,
   },
-  feesName: { type: DataTypes.STRING, allowNull: false },
-  feesImg: { type: DataTypes.STRING, allowNull: false },
+  fees_name: { type: DataTypes.STRING, allowNull: false },
+  fees_img: { type: DataTypes.STRING, allowNull: false },
 });
 const FeesInfo = sequelize.define('fees_info', {
   id_feesInfo: {
@@ -297,14 +301,14 @@ const FeesInfo = sequelize.define('fees_info', {
     primaryKey: true,
     autoIncrement: true,
   },
-  feesPrice: {
+  fees_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { notNull: { msg: 'enter correct sum!' }, min: 1 },
   },
-  feesAutopay: { type: DataTypes.BOOLEAN, defaultValue: false },
-  feesCheckNum: { type: DataTypes.INTEGER, allowNull: false },
-  operationCardName: { type: DataTypes.STRING, allowNull: false },
+  fees_autopay: { type: DataTypes.BOOLEAN, defaultValue: false },
+  fees_checknum: { type: DataTypes.INTEGER, allowNull: false },
+  operation_card_name: { type: DataTypes.STRING, allowNull: false },
 });
 
 const OnlinePayment = sequelize.define('online_payments', {
@@ -313,23 +317,23 @@ const OnlinePayment = sequelize.define('online_payments', {
     primaryKey: true,
     autoIncrement: true,
   },
-  paymentName: { type: DataTypes.STRING, allowNull: false },
-  paymentImg: { type: DataTypes.STRING, allowNull: false },
+  payment_name: { type: DataTypes.STRING, allowNull: false },
+  payment_img: { type: DataTypes.STRING, allowNull: false },
 });
 const OnlinePaymentInfo = sequelize.define('online_payments_info', {
-  id_paymentInfo: {
+  id_payment_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  paymentPrice: {
+  payment_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { notNull: { msg: 'enter correct sum!' }, min: 1 },
   },
-  paymentAutopay: { type: DataTypes.BOOLEAN, defaultValue: false },
-  paymentCheckNum: { type: DataTypes.INTEGER, allowNull: false },
-  operationCardName: { type: DataTypes.STRING, allowNull: false },
+  payment_autopay: { type: DataTypes.BOOLEAN, defaultValue: false },
+  payment_checknum: { type: DataTypes.INTEGER, allowNull: false },
+  operation_card_name: { type: DataTypes.STRING, allowNull: false },
 });
 
 const UserMessage = sequelize.define('user_messages', {
@@ -347,31 +351,31 @@ const Transaction = sequelize.define('transactions', {
     primaryKey: true,
     autoIncrement: true,
   },
-  transactionType: { type: DataTypes.STRING, allowNull: false },
-  transactionSUm: {
+  transaction_type: { type: DataTypes.STRING, allowNull: false },
+  transaction_sum: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { min: 1, notNull: { msg: 'enter correct sum!' } },
   },
 });
 const TransactionInfo = sequelize.define('transactions_info', {
-  id_transactionInfo: {
+  id_transaction_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
   purpose: { type: DataTypes.STRING, allowNull: false },
-  checkNum: {
+  checknum: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: { min: 100000000, max: 999999999 },
   },
-  bankComission: {
+  bank_comission: {
     type: DataTypes.INTEGER,
     defaultValue: 2,
     validate: { min: 2, max: 13 },
   },
-  transactionDescription: { type: DataTypes.STRING, defaultValue: 'none' },
+  transaction_description: { type: DataTypes.STRING, defaultValue: 'none' },
 });
 
 const Activitie = sequelize.define('activities', {
@@ -380,8 +384,8 @@ const Activitie = sequelize.define('activities', {
     primaryKey: true,
     autoIncrement: true,
   },
-  activitieName: { type: DataTypes.STRING, allowNull: false },
-  activitieImg: { type: DataTypes.STRING, allowNull: false },
+  activitie_name: { type: DataTypes.STRING, allowNull: false },
+  activitie_img: { type: DataTypes.STRING, allowNull: false },
 });
 const Partner = sequelize.define('partners', {
   id_partner: {
@@ -389,8 +393,8 @@ const Partner = sequelize.define('partners', {
     primaryKey: true,
     autoIncrement: true,
   },
-  partnerName: { type: DataTypes.STRING, allowNull: false },
-  partnerImg: { type: DataTypes.STRING, allowNull: false },
+  partner_name: { type: DataTypes.STRING, allowNull: false },
+  partner_img: { type: DataTypes.STRING, allowNull: false },
 });
 const Benefit = sequelize.define('benefits', {
   id_benefit: {
@@ -398,8 +402,8 @@ const Benefit = sequelize.define('benefits', {
     primaryKey: true,
     autoIncrement: true,
   },
-  benefitName: { type: DataTypes.STRING, allowNull: false },
-  benefitImg: { type: DataTypes.STRING, allowNull: false },
+  benefit_name: { type: DataTypes.STRING, allowNull: false },
+  benefit_img: { type: DataTypes.STRING, allowNull: false },
 });
 const Offer = sequelize.define('offers', {
   id_offer: {
@@ -407,17 +411,17 @@ const Offer = sequelize.define('offers', {
     primaryKey: true,
     autoIncrement: true,
   },
-  offerName: { type: DataTypes.STRING, allowNull: false },
-  offerImg: { type: DataTypes.STRING, allowNull: false },
+  offer_name: { type: DataTypes.STRING, allowNull: false },
+  offer_img: { type: DataTypes.STRING, allowNull: false },
 });
 const OfferInfo = sequelize.define('offer_info', {
-  id_offerInfo: {
+  id_offer_info: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
   },
-  offerType: { type: DataTypes.STRING, allowNull: false },
-  offerPrice: {
+  offer_type: { type: DataTypes.STRING, allowNull: false },
+  offer_price: {
     type: DataTypes.INTEGER,
     allowNull: false,
     validate: {
@@ -425,14 +429,14 @@ const OfferInfo = sequelize.define('offer_info', {
       min: 1,
     },
   },
-  offerComission: {
+  offer_comission: {
     type: DataTypes.INTEGER,
     defaultValue: 2,
     validate: { min: 2, max: 13 },
   },
   longterm: { type: DataTypes.BOOLEAN, allowNull: false },
-  offerConfirmed: { type: DataTypes.BOOLEAN, allowNull: false },
-  offerDescription: { type: DataTypes.STRING, defaultValue: 'none' },
+  offer_confirmed: { type: DataTypes.BOOLEAN, allowNull: false },
+  offer_description: { type: DataTypes.STRING, defaultValue: 'none' },
 });
 
 const PersonPartner = sequelize.define(
@@ -479,98 +483,98 @@ const CompanyBenefit = sequelize.define(
   { createdAt: false }
 );
 
-UserAccount.hasOne(UserPerson, { foreignKey: 'accountId' });
-UserPerson.belongsTo(UserAccount, { foreignKey: 'accountId' });
+UserAccount.hasOne(UserPerson, { foreignKey: 'account_id' });
+UserAccount.belongsTo(UserPerson, { foreignKey: 'account_id' });
 
-UserPerson.hasMany(AccountFilling), { foreignKey: 'personFillId' };
-AccountFilling.belongsTo(UserPerson, { foreignKey: 'personFillId' });
+UserPerson.hasMany(AccountFilling), { foreignKey: 'person_fill_id' };
+UserPerson.belongsTo(AccountFilling, { foreignKey: 'person_fill_id' });
 
-UserPerson.hasMany(Credit, { foreignKey: 'personCreditId' });
-Credit.belongsTo(UserPerson, { foreignKey: 'personCreditId' });
+UserPerson.hasMany(Credit, { foreignKey: 'person_credit_id' });
+UserPerson.belongsTo(Credit, { foreignKey: 'person_credit_id' });
 
-UserPerson.hasMany(OnlinePayment, { foreignKey: 'personPaymentId' });
-OnlinePayment.belongsTo(UserPerson, { foreignKey: 'personPaymentId' });
+UserPerson.hasMany(OnlinePayment, { foreignKey: 'person_payment_id' });
+UserPerson.belongsTo(OnlinePayment, { foreignKey: 'person_payment_id' });
 
-OnlinePayment.hasOne(OnlinePaymentInfo, { foreignKey: 'paymentId' });
-OnlinePaymentInfo.belongsTo(OnlinePayment, { foreignKey: 'paymentId' });
+OnlinePayment.hasOne(OnlinePaymentInfo, { foreignKey: 'payment_id' });
+OnlinePayment.belongsTo(OnlinePaymentInfo, { foreignKey: 'payment_id' });
 
-UserPerson.hasMany(Bill, { foreignKey: 'personBillId' });
-Bill.belongsTo(UserPerson, { foreignKey: 'personBillId' });
+UserPerson.hasMany(Bill, { foreignKey: 'person_bill_id' });
+UserPerson.belongsTo(Bill, { foreignKey: 'person_bill_id' });
 
-Bill.hasOne(BillInfo, { foreignKey: 'billId' });
-BillInfo.belongsTo(Bill), { foreignKey: 'billId' };
+Bill.hasOne(BillInfo, { foreignKey: 'bill_id' });
+Bill.belongsTo(BillInfo), { foreignKey: 'bill_id' };
 
-UserPerson.hasMany(Tax, { foreignKey: 'personTaxId' });
-Tax.belongsTo(UserPerson, { foreignKey: 'personTaxId' });
+UserPerson.hasMany(Tax, { foreignKey: 'person_tax_id' });
+UserPerson.belongsTo(Tax, { foreignKey: 'person_tax_id' });
 
-Tax.hasOne(TaxInfo, { foreignKey: 'taxId' });
-TaxInfo.belongsTo(Tax, { foreignKey: 'taxId' });
+Tax.hasOne(TaxInfo, { foreignKey: 'tax_id' });
+Tax.belongsTo(TaxInfo, { foreignKey: 'tax_id' });
 
-UserPerson.hasMany(Fees, { foreignKey: 'personFeesId' });
-Fees.belongsTo(UserPerson, { foreignKey: 'personFeesId' });
+UserPerson.hasMany(Fees, { foreignKey: 'person_fees_id' });
+UserPerson.belongsTo(Fees, { foreignKey: 'person_fees_id' });
 
-Fees.hasOne(FeesInfo, { foreignKey: 'feesId' });
-FeesInfo.belongsTo(Fees, { foreignKey: 'feesId' });
+Fees.hasOne(FeesInfo, { foreignKey: 'fees_id' });
+Fees.belongsTo(FeesInfo, { foreignKey: 'fees_id' });
 
-UserPerson.hasMany(UserMessage, { foreignKey: 'personMessageId' });
-UserMessage.belongsTo(UserPerson, { foreignKey: 'personMessageId' });
+UserPerson.hasMany(UserMessage, { foreignKey: 'person_message_id' });
+UserPerson.belongsTo(UserMessage, { foreignKey: 'person_message_id' });
 
-UserAccount.hasMany(BankAccount, { foreignKey: 'userBankId' });
-BankAccount.belongsTo(UserAccount, { foreignKey: 'userBankId' });
+UserAccount.hasMany(BankAccount, { foreignKey: 'user_bank_id' });
+UserPerson.belongsTo(BankAccount, { foreignKey: 'user_bank_id' });
 
-BankAccount.hasOne(BankAccountBalance), { foreignKey: 'bankId' };
-BankAccountBalance.belongsTo(BankAccount, { foreignKey: 'bankBId' });
+BankAccount.hasOne(BankAccountBalance), { foreignKey: 'bank_id' };
+BankAccount.belongsTo(BankAccountBalance, { foreignKey: 'bank_id' });
 
-BankAccount.hasMany(CreditCard, { foreignKey: 'bankCardId' });
-CreditCard.belongsTo(BankAccount), { foreignKey: 'bankCardId' };
+BankAccount.hasMany(CreditCard, { foreignKey: 'bank_card_id' });
+BankAccount.belongsTo(CreditCard), { foreignKey: 'bank_card_id' };
 
-CreditCard.hasOne(CreditCardInfo, { foreignKey: 'cardId' });
-CreditCardInfo.belongsTo(CreditCard, { foreignKey: 'cardId' });
+CreditCard.hasOne(CreditCardInfo, { foreignKey: 'card_id' });
+CreditCard.belongsTo(CreditCardInfo, { foreignKey: 'card_id' });
 
-CreditCardInfo.hasMany(CreditCardType, { foreignKey: 'cardInfoId' });
-CreditCardType.belongsTo(CreditCardInfo, { foreignKey: 'cardInfoId' });
+CreditCardInfo.hasMany(CreditCardType, { foreignKey: 'card_info_id' });
+CreditCardInfo.belongsTo(CreditCardType, { foreignKey: 'card_info_id' });
 
-UserAccount.hasMany(Company, { foreignKey: 'userCompanyId' });
-Company.belongsTo(UserAccount, { foreignKey: 'userCompanyId' });
+UserAccount.hasMany(Company, { foreignKey: 'user_company_id' });
+UserAccount.belongsTo(Company, { foreignKey: 'user_company_id' });
 
-Company.hasMany(CompanyInfo, { foreignKey: 'companyId' });
-CompanyInfo.belongsTo(Company, { foreignKey: 'companyId' });
+Company.hasMany(CompanyInfo, { foreignKey: 'company_id' });
+Company.belongsTo(CompanyInfo, { foreignKey: 'company_id' });
 
-Company.hasMany(Offer, { foreignKey: 'companyOfferId' });
-Offer.belongsTo(Company, { foreignKey: 'companyOfferId' });
+Company.hasMany(Offer, { foreignKey: 'company_offer_id' });
+Company.belongsTo(Offer, { foreignKey: 'company_offer_id' });
 
-UserPerson.hasMany(Offer, { foreignKey: 'personOfferId' });
-Offer.belongsTo(UserPerson, { foreignKey: 'personOfferId' });
+UserPerson.hasMany(Offer, { foreignKey: 'person_offer_id' });
+UserPerson.belongsTo(Offer, { foreignKey: 'person_offer_id' });
 
-Offer.hasOne(OfferInfo, { foreignKey: 'offerId' });
-OfferInfo.belongsTo(Offer, { foreignKey: 'offerId' });
+Offer.hasOne(OfferInfo, { foreignKey: 'offer_id' });
+Offer.belongsTo(OfferInfo, { foreignKey: 'offer_id' });
 
-Transaction.hasOne(TransactionInfo, { foreignKey: 'transactionId' });
-TransactionInfo.belongsTo(Transaction, { foreignKey: 'transactionId' });
+Transaction.hasOne(TransactionInfo, { foreignKey: 'transaction_id' });
+Transaction.belongsTo(TransactionInfo, { foreignKey: 'transaction_id' });
 
-UserPerson.hasMany(Transaction, { foreignKey: 'personTransactionId' });
-Transaction.belongsTo(UserPerson, { foreignKey: 'personTransactionId' });
+UserPerson.hasMany(Transaction, { foreignKey: 'person_transaction_id' });
+UserPerson.belongsTo(Transaction, { foreignKey: 'person_transaction_id' });
 
-Company.hasMany(Transaction, { foreignKey: 'companyTransactionId' });
-Transaction.belongsTo(Company, { foreignKey: 'companyTransactionId' });
+Company.hasMany(Transaction, { foreignKey: 'company_transaction_id' });
+Company.belongsTo(Transaction, { foreignKey: 'company_transaction_id' });
 
 Partner.belongsToMany(UserPerson, { through: PersonPartner });
-UserPerson.belongsToMany(Partner, { through: PersonPartner });
+Partner.belongsToMany(UserPerson, { through: PersonPartner });
 
 Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
-UserPerson.belongsToMany(Activitie, { through: PersonActivitie });
+Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
 
 Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
-UserPerson.belongsToMany(Benefit, { through: PersonBenefit });
+Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
 
 Partner.belongsToMany(Company, { through: CompanyPartner });
-Company.belongsToMany(Partner, { through: CompanyPartner });
+Partner.belongsToMany(Company, { through: CompanyPartner });
 
 Activitie.belongsToMany(Company, { through: CompanyActivitie });
-Company.belongsToMany(Activitie, { through: CompanyActivitie });
+Activitie.belongsToMany(Company, { through: CompanyActivitie });
 
 Benefit.belongsToMany(Company, { through: CompanyBenefit });
-Company.belongsToMany(Benefit, { through: CompanyBenefit });
+Benefit.belongsToMany(Company, { through: CompanyBenefit });
 
 module.exports = {
   AvailableActivitie,
