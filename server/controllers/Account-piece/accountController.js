@@ -1,4 +1,4 @@
-const { UserPerson, UserAccount } = require('../../models/models');
+const { UserAccount } = require('../../models/models');
 const ApiError = require('../../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
@@ -6,21 +6,7 @@ const path = require('path');
 class accountController {
   async createAccount(req, res) {
     try {
-      const {
-        userSex,
-        userAge,
-        userHomeAdress,
-        userPhoneNumber,
-        workPlace,
-        workIncome,
-        name,
-        surName,
-        thirdName,
-        email,
-        role,
-        creditHistory,
-        creditCanConfirmed,
-      } = req.body;
+      const { name, surName, thirdName, email, role } = req.body;
 
       let { img } = req.files;
 
@@ -35,23 +21,9 @@ class accountController {
         surName,
         thirdName,
         email,
-        role,
         img: filename,
+        role: role.toUpperCase(),
       });
-
-      if (account) {
-        await UserPerson.create({
-          userSex,
-          userAge,
-          userHomeAdress,
-          userPhoneNumber,
-          workPlace,
-          workIncome,
-          creditHistory,
-          creditCanConfirmed,
-          accountId: account.id_account,
-        });
-      }
 
       return res.json(account);
     } catch (error) {
@@ -60,7 +32,7 @@ class accountController {
   }
   async getAccounts(req, res) {
     try {
-      const accounts = await UserAccount.findAll({ include: UserPerson });
+      const accounts = await UserAccount.findAll();
       return res.json(accounts);
     } catch (error) {
       ApiError.badRequest(error.message);
