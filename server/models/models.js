@@ -484,7 +484,7 @@ const CompanyBenefit = sequelize.define(
 );
 
 UserAccount.hasOne(UserPerson, { foreignKey: 'account_id' });
-UserAccount.belongsTo(UserPerson, { foreignKey: 'account_id' });
+UserPerson.belongsTo(UserAccount, { foreignKey: 'account_id' });
 
 UserPerson.hasMany(AccountFilling), { foreignKey: 'person_fill_id' };
 UserPerson.belongsTo(AccountFilling, { foreignKey: 'person_fill_id' });
@@ -546,13 +546,13 @@ CompanyInfo.belongsTo(Company, {
   as: 'company_info',
 });
 Company.hasMany(Offer, { foreignKey: 'company_offer_id' });
-Company.belongsTo(Offer, { foreignKey: 'company_offer_id' });
+Offer.belongsTo(Company, { foreignKey: 'company_offer_id' });
 
 UserPerson.hasMany(Offer, { foreignKey: 'person_offer_id' });
-UserPerson.belongsTo(Offer, { foreignKey: 'person_offer_id' });
+Offer.belongsTo(UserPerson, { foreignKey: 'person_offer_id' });
 
-Offer.hasOne(OfferInfo, { foreignKey: 'offer_id' });
-Offer.belongsTo(OfferInfo, { foreignKey: 'offer_id' });
+Offer.hasOne(OfferInfo, { foreignKey: 'offer_id', as: 'offer_info' });
+OfferInfo.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer_info' });
 
 Transaction.hasOne(TransactionInfo, { foreignKey: 'transaction_id' });
 Transaction.belongsTo(TransactionInfo, { foreignKey: 'transaction_id' });

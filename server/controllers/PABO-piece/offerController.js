@@ -5,41 +5,43 @@ const path = require('path');
 
 class OfferController {
   async createOffer(req, res) {
-    let { offerName } = req.body;
+    let {
+      offerName,
+      offerType,
+      offerPrice,
+      offerComission,
+      longterm,
+      offerConfirmed,
+      offerDescription,
+      idCompanyOffer,
+      idPersonOffer,
+    } = req.body;
+
     let { offerImg } = req.files;
 
-    let fileName = `${uuid.v4()}.png`;
-
-    const offerInfo = {
-      type: 'test',
-      price: 123333333,
-      comission: 11,
-      longterm: false,
-      confirmed: false,
-      description: 'test',
-    };
+    let fileName = `offer__${uuid.v4()}.png`;
 
     offerImg.mv(
       path.resolve(__dirname, '..', '..', 'static', 'offers', fileName)
     );
 
-    const offer = await Offer.create({
-      offerName,
-      offerImg: fileName,
-    });
-
-    if (offerInfo) {
-      //offerInfo = JSON.parse(offerInfo);
-      OfferInfo.create({
-        offerType: offerInfo.type,
-        offerPrice: offerInfo.price,
-        offerComission: offerInfo.comission,
-        longterm: offerInfo.longterm,
-        offerConfirmed: offerInfo.confirmed,
-        offerDescription: offerInfo.description,
-        offerId: offer.id_offer,
-      });
-    }
+    const offer = await Offer.create(
+      {
+        offer_name: offerName,
+        offer_img: fileName,
+        company_offer_id: idCompanyOffer || null,
+        person_offer_id: idPersonOffer || null,
+        offer_info: {
+          offer_type: offerType,
+          offer_price: offerPrice,
+          offer_comission: offerComission,
+          longterm,
+          offer_confirmed: offerConfirmed,
+          offer_description: offerDescription,
+        },
+      },
+      { include: { model: OfferInfo, as: 'offer_info' } }
+    );
 
     return res.json(offer);
   }

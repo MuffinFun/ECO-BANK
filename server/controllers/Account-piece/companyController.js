@@ -14,20 +14,23 @@ class companyController {
         idAccount,
       } = req.body;
 
-      const company = await Company.create({
-        company_name: companyName,
-        user_company_id: idAccount,
-      });
-      const companyInfo = await CompanyInfo.create({
-        company_adress: companyAdress,
-        company_phone_number: companyPhoneNumber,
-        count_of_buildings: countOfBuildings,
-        company_price: companyPrice,
-        company_id: company.id_company,
-      });
+      const company = await Company.create(
+        {
+          company_name: companyName,
+          user_company_id: idAccount,
+          company_info: {
+            company_adress: companyAdress,
+            company_phone_number: companyPhoneNumber,
+            count_of_buildings: countOfBuildings,
+            company_price: companyPrice,
+          },
+        },
+        { include: { model: CompanyInfo, as: 'company_info' } }
+      );
+      // const companyInfo = await CompanyInfo.create({});
 
       console.log('uraaaa');
-      return res.json([company, companyInfo]);
+      return res.json([company]);
     } catch (error) {
       ApiError.badRequest(error.message);
     }
