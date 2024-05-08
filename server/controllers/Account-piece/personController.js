@@ -17,15 +17,15 @@ class personController {
       } = req.body;
 
       const person = await UserPerson.create({
-        userSex,
-        userAge,
-        userHomeAdress,
-        userPhoneNumber,
-        workPlace,
-        workIncome,
-        creaditHistory,
-        creditCanConfirmed,
-        accountId: idAccount,
+        user_sex: userSex,
+        user_age: userAge,
+        user_home_adress: userHomeAdress,
+        user_phone_number: userPhoneNumber,
+        work_place: workPlace,
+        work_income: workIncome,
+        creadit_history: creaditHistory,
+        credit_can_confirmed: creditCanConfirmed,
+        account_id: idAccount,
       });
 
       return res.json(person);

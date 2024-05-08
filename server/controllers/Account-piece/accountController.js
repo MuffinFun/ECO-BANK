@@ -18,8 +18,8 @@ class accountController {
 
       const account = await UserAccount.create({
         name,
-        surName,
-        thirdName,
+        sur_name: surName,
+        third_name: thirdName,
         email,
         img: filename,
         role: role.toUpperCase(),

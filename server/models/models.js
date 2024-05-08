@@ -537,9 +537,14 @@ CreditCardInfo.belongsTo(CreditCardType, { foreignKey: 'card_info_id' });
 UserAccount.hasMany(Company, { foreignKey: 'user_company_id' });
 UserAccount.belongsTo(Company, { foreignKey: 'user_company_id' });
 
-Company.hasMany(CompanyInfo, { foreignKey: 'company_id' });
-Company.belongsTo(CompanyInfo, { foreignKey: 'company_id' });
-
+Company.hasOne(CompanyInfo, {
+  foreignKey: 'company_id',
+  as: 'company_info',
+});
+CompanyInfo.belongsTo(Company, {
+  foreignKey: 'company_id',
+  as: 'company_info',
+});
 Company.hasMany(Offer, { foreignKey: 'company_offer_id' });
 Company.belongsTo(Offer, { foreignKey: 'company_offer_id' });
 
