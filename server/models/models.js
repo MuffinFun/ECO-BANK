@@ -487,55 +487,73 @@ UserAccount.hasOne(UserPerson, { foreignKey: 'account_id' });
 UserPerson.belongsTo(UserAccount, { foreignKey: 'account_id' });
 
 UserPerson.hasMany(AccountFilling), { foreignKey: 'person_fill_id' };
-UserPerson.belongsTo(AccountFilling, { foreignKey: 'person_fill_id' });
+AccountFilling.belongsTo(UserPerson, { foreignKey: 'person_fill_id' });
 
 UserPerson.hasMany(Credit, { foreignKey: 'person_credit_id' });
-UserPerson.belongsTo(Credit, { foreignKey: 'person_credit_id' });
+Credit.belongsTo(UserPerson, { foreignKey: 'person_credit_id' });
 
 UserPerson.hasMany(OnlinePayment, { foreignKey: 'person_payment_id' });
-UserPerson.belongsTo(OnlinePayment, { foreignKey: 'person_payment_id' });
+OnlinePayment.belongsTo(UserPerson, { foreignKey: 'person_payment_id' });
 
-OnlinePayment.hasOne(OnlinePaymentInfo, { foreignKey: 'payment_id' });
-OnlinePayment.belongsTo(OnlinePaymentInfo, { foreignKey: 'payment_id' });
+OnlinePayment.hasOne(OnlinePaymentInfo, {
+  foreignKey: 'payment_id',
+  as: 'payment_info',
+});
+OnlinePaymentInfo.belongsTo(OnlinePayment, {
+  foreignKey: 'payment_id',
+  as: 'payment_info',
+});
 
 UserPerson.hasMany(Bill, { foreignKey: 'person_bill_id' });
-UserPerson.belongsTo(Bill, { foreignKey: 'person_bill_id' });
+Bill.belongsTo(UserPerson, { foreignKey: 'person_bill_id' });
 
-Bill.hasOne(BillInfo, { foreignKey: 'bill_id' });
-Bill.belongsTo(BillInfo), { foreignKey: 'bill_id' };
+Bill.hasOne(BillInfo, { foreignKey: 'bill_id', as: 'bill_info' });
+BillInfo.belongsTo(Bill, { foreignKey: 'bill_id', as: 'bill_info' });
 
 UserPerson.hasMany(Tax, { foreignKey: 'person_tax_id' });
-UserPerson.belongsTo(Tax, { foreignKey: 'person_tax_id' });
+Tax.belongsTo(UserPerson, { foreignKey: 'person_tax_id' });
 
-Tax.hasOne(TaxInfo, { foreignKey: 'tax_id' });
-Tax.belongsTo(TaxInfo, { foreignKey: 'tax_id' });
+Tax.hasOne(TaxInfo, { foreignKey: 'tax_id', as: 'tax_info' });
+TaxInfo.belongsTo(Tax, { foreignKey: 'tax_id', as: 'tax_info' });
 
 UserPerson.hasMany(Fees, { foreignKey: 'person_fees_id' });
-UserPerson.belongsTo(Fees, { foreignKey: 'person_fees_id' });
+Fees.belongsTo(UserPerson, { foreignKey: 'person_fees_id' });
 
-Fees.hasOne(FeesInfo, { foreignKey: 'fees_id' });
-Fees.belongsTo(FeesInfo, { foreignKey: 'fees_id' });
+Fees.hasOne(FeesInfo, { foreignKey: 'fees_id', as: 'info_info' });
+FeesInfo.belongsTo(Fees, { foreignKey: 'fees_id', as: 'info_info' });
 
 UserPerson.hasMany(UserMessage, { foreignKey: 'person_message_id' });
-UserPerson.belongsTo(UserMessage, { foreignKey: 'person_message_id' });
+UserMessage.belongsTo(UserPerson, { foreignKey: 'person_message_id' });
 
 UserAccount.hasMany(BankAccount, { foreignKey: 'user_bank_id' });
-UserPerson.belongsTo(BankAccount, { foreignKey: 'user_bank_id' });
+BankAccount.belongsTo(UserAccount, { foreignKey: 'user_bank_id' });
 
 BankAccount.hasOne(BankAccountBalance), { foreignKey: 'bank_id' };
-BankAccount.belongsTo(BankAccountBalance, { foreignKey: 'bank_id' });
+BankAccountBalance.belongsTo(BankAccount, { foreignKey: 'bank_id' });
 
 BankAccount.hasMany(CreditCard, { foreignKey: 'bank_card_id' });
-BankAccount.belongsTo(CreditCard), { foreignKey: 'bank_card_id' };
+CreditCard.belongsTo(BankAccount, { foreignKey: 'bank_card_id' });
 
-CreditCard.hasOne(CreditCardInfo, { foreignKey: 'card_id' });
-CreditCard.belongsTo(CreditCardInfo, { foreignKey: 'card_id' });
+CreditCard.hasOne(CreditCardInfo, {
+  foreignKey: 'card_id',
+  as: 'credit_card_info',
+});
+CreditCardInfo.belongsTo(CreditCard, {
+  foreignKey: 'card_id',
+  as: 'credit_card_info',
+});
 
-CreditCardInfo.hasMany(CreditCardType, { foreignKey: 'card_info_id' });
-CreditCardInfo.belongsTo(CreditCardType, { foreignKey: 'card_info_id' });
+CreditCardInfo.hasMany(CreditCardType, {
+  foreignKey: 'card_info_id',
+  as: 'credit_card_type_info',
+});
+CreditCardType.belongsTo(CreditCardInfo, {
+  foreignKey: 'card_info_id',
+  as: 'credit_card_type_info',
+});
 
 UserAccount.hasMany(Company, { foreignKey: 'user_company_id' });
-UserAccount.belongsTo(Company, { foreignKey: 'user_company_id' });
+Company.belongsTo(Company, { foreignKey: 'user_company_id' });
 
 Company.hasOne(CompanyInfo, {
   foreignKey: 'company_id',
@@ -554,32 +572,38 @@ Offer.belongsTo(UserPerson, { foreignKey: 'person_offer_id' });
 Offer.hasOne(OfferInfo, { foreignKey: 'offer_id', as: 'offer_info' });
 OfferInfo.belongsTo(Offer, { foreignKey: 'offer_id', as: 'offer_info' });
 
-Transaction.hasOne(TransactionInfo, { foreignKey: 'transaction_id' });
-Transaction.belongsTo(TransactionInfo, { foreignKey: 'transaction_id' });
+Transaction.hasOne(TransactionInfo, {
+  foreignKey: 'transaction_id',
+  as: 'transaction_info',
+});
+TransactionInfo.belongsTo(Transaction, {
+  foreignKey: 'transaction_id',
+  as: 'transaction_info',
+});
 
 UserPerson.hasMany(Transaction, { foreignKey: 'person_transaction_id' });
-UserPerson.belongsTo(Transaction, { foreignKey: 'person_transaction_id' });
+Transaction.belongsTo(UserPerson, { foreignKey: 'person_transaction_id' });
 
 Company.hasMany(Transaction, { foreignKey: 'company_transaction_id' });
-Company.belongsTo(Transaction, { foreignKey: 'company_transaction_id' });
+Transaction.belongsTo(Company, { foreignKey: 'company_transaction_id' });
 
 Partner.belongsToMany(UserPerson, { through: PersonPartner });
-Partner.belongsToMany(UserPerson, { through: PersonPartner });
+UserPerson.belongsToMany(Partner, { through: PersonPartner });
 
 Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
-Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
+UserPerson.belongsToMany(Activitie, { through: PersonActivitie });
 
 Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
-Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
+UserPerson.belongsToMany(Benefit, { through: PersonBenefit });
 
 Partner.belongsToMany(Company, { through: CompanyPartner });
-Partner.belongsToMany(Company, { through: CompanyPartner });
+Company.belongsToMany(Partner, { through: CompanyPartner });
 
 Activitie.belongsToMany(Company, { through: CompanyActivitie });
-Activitie.belongsToMany(Company, { through: CompanyActivitie });
+Company.belongsToMany(Activitie, { through: CompanyActivitie });
 
 Benefit.belongsToMany(Company, { through: CompanyBenefit });
-Benefit.belongsToMany(Company, { through: CompanyBenefit });
+Company.belongsToMany(Benefit, { through: CompanyBenefit });
 
 module.exports = {
   AvailableActivitie,
