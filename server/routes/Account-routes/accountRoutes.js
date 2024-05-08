@@ -8,5 +8,6 @@ router.post('/', accountController.createAccount);
 router.post('/person', personController.createPerson);
 router.post('/company', companyController.createCompany);
 router.get('/', accountController.getAccounts);
+router.get('/company', companyController.getCompanies);
 
 module.exports = router;
