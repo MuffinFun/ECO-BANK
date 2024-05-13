@@ -3,46 +3,62 @@ const { BankAccount, BankAccountBalance } = require('../../models/models');
 
 class BankAccountController {
   async createBankAccount(req, res) {
-    let { bankAccName, userId, initialSum } = req.body;
+    try {
+      const { bankAccName, userId, initialSum } = req.body;
 
-    const bankAccount = await BankAccount.create(
-      {
-        bank_account_name: bankAccName,
-        user_bank_id: userId,
-        bank_balance: {
-          total_balance: initialSum || 0,
+      const bankAccount = await BankAccount.create(
+        {
+          bank_account_name: bankAccName,
+          user_bank_id: userId,
+          bank_balance: {
+            total_balance: initialSum || 0,
+          },
         },
-      },
-      { include: { model: BankAccountBalance, as: 'bank_balance' } }
-    );
+        { include: { model: BankAccountBalance, as: 'bank_balance' } }
+      );
 
-    return res.json(bankAccount);
+      return res.json(bankAccount);
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
   }
   async getBalance(req, res) {
-    const { bankId } = req.params;
-    const balance = await BankAccountBalance.findOne({
-      where: { bank_id: bankId },
-    });
-    return res.json(balance);
+    try {
+      const { bankId } = req.params;
+      const balance = await BankAccountBalance.findOne({
+        where: { bank_id: bankId },
+      });
+      return res.json(balance);
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
   }
   async getBankAccounts(req, res) {
-    const bankAccounts = await BankAccount.findAll({
-      include: { model: BankAccountBalance, as: 'bank_balance' },
-    });
-    return res.json(bankAccounts);
+    try {
+      const bankAccounts = await BankAccount.findAll({
+        include: { model: BankAccountBalance, as: 'bank_balance' },
+      });
+      return res.json(bankAccounts);
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
   }
 
   async updateBalance(req, res) {
-    const { newSum } = req.body;
-    const { bankId } = req.params;
-    const newBalance = await BankAccountBalance.update(
-      {
-        total_balance: newSum,
-      },
-      { where: { bank_id: bankId }, returning: true }
-    );
+    try {
+      const { newSum } = req.body;
+      const { bankId } = req.params;
+      const newBalance = await BankAccountBalance.update(
+        {
+          total_balance: newSum,
+        },
+        { where: { bank_id: bankId }, returning: true }
+      );
 
-    return res.json(newBalance[1][0]);
+      return res.json(newBalance[1][0]);
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
   }
 }
 
