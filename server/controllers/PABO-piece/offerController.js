@@ -48,12 +48,14 @@ class OfferController {
   async getOffer(req, res) {
     const { id_offer } = req.params;
     const offers = await Offer.findOne({
-      include: { model: OfferInfo, where: { offerId: id_offer } },
+      include: { model: OfferInfo, where: { offer_id: id_offer } },
     });
     return res.json(offers);
   }
   async getOffers(req, res) {
-    const offer = await Offer.findAll();
+    const offer = await Offer.findAll({
+      include: { model: OfferInfo, as: 'offer_info' },
+    });
     return res.json(offer);
   }
 }

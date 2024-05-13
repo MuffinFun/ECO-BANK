@@ -519,8 +519,8 @@ TaxInfo.belongsTo(Tax, { foreignKey: 'tax_id', as: 'tax_info' });
 UserPerson.hasMany(Fees, { foreignKey: 'person_fees_id' });
 Fees.belongsTo(UserPerson, { foreignKey: 'person_fees_id' });
 
-Fees.hasOne(FeesInfo, { foreignKey: 'fees_id', as: 'info_info' });
-FeesInfo.belongsTo(Fees, { foreignKey: 'fees_id', as: 'info_info' });
+Fees.hasOne(FeesInfo, { foreignKey: 'fees_id', as: 'fees_info' });
+FeesInfo.belongsTo(Fees, { foreignKey: 'fees_id', as: 'fees_info' });
 
 UserPerson.hasMany(UserMessage, { foreignKey: 'person_message_id' });
 UserMessage.belongsTo(UserPerson, { foreignKey: 'person_message_id' });
@@ -528,8 +528,14 @@ UserMessage.belongsTo(UserPerson, { foreignKey: 'person_message_id' });
 UserAccount.hasMany(BankAccount, { foreignKey: 'user_bank_id' });
 BankAccount.belongsTo(UserAccount, { foreignKey: 'user_bank_id' });
 
-BankAccount.hasOne(BankAccountBalance), { foreignKey: 'bank_id' };
-BankAccountBalance.belongsTo(BankAccount, { foreignKey: 'bank_id' });
+BankAccount.hasOne(BankAccountBalance, {
+  foreignKey: 'bank_id',
+  as: 'bank_balance',
+});
+BankAccountBalance.belongsTo(BankAccount, {
+  foreignKey: 'bank_id',
+  as: 'bank_balance',
+});
 
 BankAccount.hasMany(CreditCard, { foreignKey: 'bank_card_id' });
 CreditCard.belongsTo(BankAccount, { foreignKey: 'bank_card_id' });
