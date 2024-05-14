@@ -51,9 +51,9 @@ const AvailableActivitie = sequelize.define('available_activities', {
     primaryKey: true,
     autoIncrement: true,
   },
-  possibe_activitie_name: { type: DataTypes.STRING, allowNull: false },
-  possibe_activitie_img: { type: DataTypes.STRING, allowNull: false },
-  possibe_activitie_description: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_name: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_img: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_description: { type: DataTypes.STRING, allowNull: false },
 });
 
 const AvailableBenefit = sequelize.define('available_benefits', {
@@ -551,67 +551,79 @@ Transaction.belongsTo(Company, { foreignKey: 'company_transaction_id' });
 
 Partner.belongsToMany(UserPerson, {
   through: 'person_partner',
-  as: 'person_partners',
+  as: 'person',
   foreignKey: 'partner_person_id',
+  otherKey: 'person_partner_id',
 });
 UserPerson.belongsToMany(Partner, {
   through: 'person_partner',
-  as: 'person_partners',
+  as: 'partner',
+  otherKey: 'partner_person_id',
   foreignKey: 'person_partner_id',
 });
 
 Activitie.belongsToMany(UserPerson, {
   through: 'person_activitie',
-  as: 'person-activities',
+  as: 'person',
+  otherKey: 'person_activitie_id',
   foreignKey: 'activitie_person_id',
 });
 UserPerson.belongsToMany(Activitie, {
   through: 'person_activitie',
-  as: 'person_activities',
+  as: 'activitie',
+  otherKey: 'activitie_person_id',
   foreignKey: 'person_activitie_id',
 });
 
 Benefit.belongsToMany(UserPerson, {
   through: 'person_benefit',
-  as: 'person_benefits',
+  as: 'person',
+  otherKey: 'person_benefit_id',
   foreignKey: 'benefit_person_id',
 });
 UserPerson.belongsToMany(Benefit, {
   through: 'person_benefit',
-  as: 'person_benefits',
+  as: 'benefit',
+  otherKey: 'benefit_person_id',
   foreignKey: 'person_benefit_id',
 });
 
 Partner.belongsToMany(Company, {
   through: 'company_partner',
-  as: 'company_partners',
+  as: 'company',
+  otherKey: 'company_partner_id',
   foreignKey: 'partner_company_id',
 });
 Company.belongsToMany(Partner, {
   through: 'company_partner',
-  as: 'company_partners',
+  as: 'partner',
+  otherKey: 'partner_company_id',
   foreignKey: 'company_partner_id',
 });
 
 Activitie.belongsToMany(Company, {
   through: 'company_activitie',
-  as: 'company_activities',
+  as: 'company',
+  otherKey: 'company_activitie_id',
   foreignKey: 'activitie_company_id',
 });
 Company.belongsToMany(Activitie, {
   through: 'company_activitie',
-  as: 'company_activities',
+  as: 'activitie',
+  otherKey: 'activitie_company_id',
   foreignKey: 'company_activitie_id',
 });
 
 Benefit.belongsToMany(Company, {
   through: 'company_benefit',
-  as: 'company_benefits',
+  as: 'company',
+  otherKey: 'company_benefit_id',
   foreignKey: 'benefit_company_id',
 });
 Company.belongsToMany(Benefit, {
   through: 'company_benefit',
-  as: 'company_benefits',
+  as: 'benefit',
+  otherKey: 'benefit_company_id',
   foreignKey: 'company_benefit_id',
 });
 
