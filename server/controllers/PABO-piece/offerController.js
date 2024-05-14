@@ -13,24 +13,28 @@ class OfferController {
       longterm,
       offerConfirmed,
       offerDescription,
-      idCompanyOffer,
-      idPersonOffer,
+      companyId,
+      personId,
     } = req.body;
 
-    let { offerImg } = req.files;
+    let fileName;
 
-    let fileName = `offer__${uuid.v4()}.png`;
+    if (req.files) {
+      let { offerImg } = req.files;
 
-    offerImg.mv(
-      path.resolve(__dirname, '..', '..', 'static', 'offers', fileName)
-    );
+      fileName = `offer__${uuid.v4()}.png`;
+
+      offerImg.mv(
+        path.resolve(__dirname, '..', '..', 'static', 'offers', fileName)
+      );
+    }
 
     const offer = await Offer.create(
       {
         offer_name: offerName,
-        offer_img: fileName,
-        company_offer_id: idCompanyOffer || null,
-        person_offer_id: idPersonOffer || null,
+        offer_img: fileName || 'none',
+        company_offer_id: companyId || null,
+        person_offer_id: personId || null,
         offer_info: {
           offer_type: offerType,
           offer_price: offerPrice,
@@ -46,17 +50,34 @@ class OfferController {
     return res.json(offer);
   }
   async getOffer(req, res) {
-    const { id_offer } = req.params;
+    const { offerId } = req.params;
     const offers = await Offer.findOne({
-      include: { model: OfferInfo, where: { offer_id: id_offer } },
+      where: { id_offer: offerId },
+      include: {
+        model: OfferInfo,
+        as: 'offer_info',
+      },
     });
     return res.json(offers);
   }
   async getOffers(req, res) {
-    const offer = await Offer.findAll({
-      include: { model: OfferInfo, as: 'offer_info' },
-    });
-    return res.json(offer);
+    const { typeUserId, role } = req.params;
+
+    if (role.toUpperCase() === 'PERSON') {
+      const offers = await Offer.findAndCountAll({
+        where: { person_offer_id: typeUserId },
+      });
+
+      return res.json(offers);
+    } else if (role.toUpperCase() === 'COMPANY') {
+      const offers = await Offer.findAndCountAll({
+        where: { company_offer_id: typeUserId },
+      });
+
+      return res.json(offers);
+    } else {
+      throw new Error('something went wrong');
+    }
   }
 }
 
