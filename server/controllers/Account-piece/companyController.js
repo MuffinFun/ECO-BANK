@@ -27,9 +27,7 @@ class companyController {
         },
         { include: { model: CompanyInfo, as: 'company_info' } }
       );
-      // const companyInfo = await CompanyInfo.create({});
 
-      console.log('uraaaa');
       return res.json([company]);
     } catch (error) {
       ApiError.badRequest(error.message);

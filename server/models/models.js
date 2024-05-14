@@ -51,9 +51,9 @@ const AvailableActivitie = sequelize.define('available_activities', {
     primaryKey: true,
     autoIncrement: true,
   },
-  possibe_activitie_name: { type: DataTypes.STRING, allowNull: false },
-  possibe_activitie_img: { type: DataTypes.STRING, allowNull: false },
-  possibe_activitie_description: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_name: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_img: { type: DataTypes.STRING, allowNull: false },
+  available_activitie_description: { type: DataTypes.STRING, allowNull: false },
 });
 
 const AvailableBenefit = sequelize.define('available_benefits', {
@@ -439,50 +439,6 @@ const OfferInfo = sequelize.define('offer_info', {
   offer_description: { type: DataTypes.STRING, defaultValue: 'none' },
 });
 
-const PersonPartner = sequelize.define(
-  'person_partner',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-const PersonActivitie = sequelize.define(
-  'person_activitie',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-const PersonBenefit = sequelize.define(
-  'person_benefit',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-
-const CompanyPartner = sequelize.define(
-  'company_partner',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-const CompanyActivitie = sequelize.define(
-  'company_activitie',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-const CompanyBenefit = sequelize.define(
-  'company_benefit',
-  {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  },
-  { createdAt: false }
-);
-
 UserAccount.hasOne(UserPerson, { foreignKey: 'account_id' });
 UserPerson.belongsTo(UserAccount, { foreignKey: 'account_id' });
 
@@ -593,23 +549,83 @@ Transaction.belongsTo(UserPerson, { foreignKey: 'person_transaction_id' });
 Company.hasMany(Transaction, { foreignKey: 'company_transaction_id' });
 Transaction.belongsTo(Company, { foreignKey: 'company_transaction_id' });
 
-Partner.belongsToMany(UserPerson, { through: PersonPartner });
-UserPerson.belongsToMany(Partner, { through: PersonPartner });
+Partner.belongsToMany(UserPerson, {
+  through: 'person_partner',
+  as: 'person',
+  foreignKey: 'partner_person_id',
+  otherKey: 'person_partner_id',
+});
+UserPerson.belongsToMany(Partner, {
+  through: 'person_partner',
+  as: 'partner',
+  otherKey: 'partner_person_id',
+  foreignKey: 'person_partner_id',
+});
 
-Activitie.belongsToMany(UserPerson, { through: PersonActivitie });
-UserPerson.belongsToMany(Activitie, { through: PersonActivitie });
+Activitie.belongsToMany(UserPerson, {
+  through: 'person_activitie',
+  as: 'person',
+  otherKey: 'person_activitie_id',
+  foreignKey: 'activitie_person_id',
+});
+UserPerson.belongsToMany(Activitie, {
+  through: 'person_activitie',
+  as: 'activitie',
+  otherKey: 'activitie_person_id',
+  foreignKey: 'person_activitie_id',
+});
 
-Benefit.belongsToMany(UserPerson, { through: PersonBenefit });
-UserPerson.belongsToMany(Benefit, { through: PersonBenefit });
+Benefit.belongsToMany(UserPerson, {
+  through: 'person_benefit',
+  as: 'person',
+  otherKey: 'person_benefit_id',
+  foreignKey: 'benefit_person_id',
+});
+UserPerson.belongsToMany(Benefit, {
+  through: 'person_benefit',
+  as: 'benefit',
+  otherKey: 'benefit_person_id',
+  foreignKey: 'person_benefit_id',
+});
 
-Partner.belongsToMany(Company, { through: CompanyPartner });
-Company.belongsToMany(Partner, { through: CompanyPartner });
+Partner.belongsToMany(Company, {
+  through: 'company_partner',
+  as: 'company',
+  otherKey: 'company_partner_id',
+  foreignKey: 'partner_company_id',
+});
+Company.belongsToMany(Partner, {
+  through: 'company_partner',
+  as: 'partner',
+  otherKey: 'partner_company_id',
+  foreignKey: 'company_partner_id',
+});
 
-Activitie.belongsToMany(Company, { through: CompanyActivitie });
-Company.belongsToMany(Activitie, { through: CompanyActivitie });
+Activitie.belongsToMany(Company, {
+  through: 'company_activitie',
+  as: 'company',
+  otherKey: 'company_activitie_id',
+  foreignKey: 'activitie_company_id',
+});
+Company.belongsToMany(Activitie, {
+  through: 'company_activitie',
+  as: 'activitie',
+  otherKey: 'activitie_company_id',
+  foreignKey: 'company_activitie_id',
+});
 
-Benefit.belongsToMany(Company, { through: CompanyBenefit });
-Company.belongsToMany(Benefit, { through: CompanyBenefit });
+Benefit.belongsToMany(Company, {
+  through: 'company_benefit',
+  as: 'company',
+  otherKey: 'company_benefit_id',
+  foreignKey: 'benefit_company_id',
+});
+Company.belongsToMany(Benefit, {
+  through: 'company_benefit',
+  as: 'benefit',
+  otherKey: 'benefit_company_id',
+  foreignKey: 'company_benefit_id',
+});
 
 module.exports = {
   AvailableActivitie,
@@ -644,5 +660,4 @@ module.exports = {
   CreditCardType,
   AccountFilling,
   Credit,
-  PersonPartner,
 };

@@ -2,9 +2,9 @@ const Router = require('express');
 const router = new Router();
 const activitieController = require('../../controllers/PABO-piece/activitieController');
 
-router.post('/create', activitieController.createActivitie);
-router.get('/show', activitieController.getActivities);
+router.post('/add-available', activitieController.createActivitie);
 router.post('/', activitieController.addActivitie);
-router.get('/', activitieController.getMyActivities);
+router.get('/show-available', activitieController.getAvalableActivities);
+router.get('/:role', activitieController.getActivities);
 
 module.exports = router;
