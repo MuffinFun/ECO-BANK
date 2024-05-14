@@ -27,6 +27,7 @@ const Faq = sequelize.define('faq', {
   faq_question: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   faq_answer: {
     type: DataTypes.STRING,
