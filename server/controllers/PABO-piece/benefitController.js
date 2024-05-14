@@ -1,4 +1,9 @@
-const { Benefit, AvailableBenefit } = require('../../models/models');
+const {
+  Benefit,
+  AvailableBenefit,
+  UserPerson,
+  Company,
+} = require('../../models/models');
 const ApiError = require('../../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
@@ -6,19 +11,24 @@ const path = require('path');
 class BenefitController {
   async createBenefit(req, res) {
     try {
-      let { availableBenefitName, availableBenefitDescription } = req.body;
-      let { availableBenefitImg } = req.files;
+      let { availableName, availableDescription } = req.body;
 
-      let fileName = `${uuid.v4()}.png`;
+      let fileName;
 
-      availableBenefitImg.mv(
-        path.resolve(__dirname, '..', 'static', 'benefits', fileName)
-      );
+      if (req.files) {
+        let { availableImg } = req.files;
+
+        fileName = `${uuid.v4()}.png`;
+
+        availableImg.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'benefits', fileName)
+        );
+      }
 
       const benefit = await AvailableBenefit.create({
-        availableBenefitName,
-        availableBenefitDescription,
-        availableBenefitImg: fileName,
+        available_benefit_name: availableName,
+        available_benefit_description: availableDescription,
+        available_benefit_img: fileName,
       });
 
       return res.json(benefit);
@@ -28,34 +38,67 @@ class BenefitController {
   }
   async addBenefit(req, res) {
     try {
-      let { benefitName } = req.body;
-      let { benefitImg } = req.files;
+      let { name, personId, companyId } = req.body;
 
-      let fileName = `${uuid.v4()}.png`;
+      let fileName;
 
-      benefitImg.mv(
-        path.resolve(__dirname, '..', 'static', 'benefits', fileName)
-      );
+      if (req.files) {
+        let { img } = req.files;
+
+        fileName = `benefit__${uuid.v4()}.png`;
+
+        img.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'benefits', fileName)
+        );
+      }
 
       const benefit = await Benefit.create({
-        benefitName,
-        benefitImg: fileName,
+        benefit_name: name,
+        benefit_img: fileName,
       });
+
+      if (companyId) {
+        await benefit.addCompany(+companyId);
+      } else if (personId) {
+        await benefit.addPerson(+personId);
+      } else {
+        throw new Error('something went wrong in benefit controller');
+      }
 
       return res.json(benefit);
     } catch (error) {
       ApiError.badRequest(error.message);
     }
   }
-  async getMyBenefits(req, res) {
+  async getBenefits(req, res) {
     try {
-      const benefits = await Benefit.findAll();
-      return res.json(benefits);
+      const { role } = req.params;
+      if (role.toUpperCase() === 'PERSON') {
+        const benefits = await Benefit.findAndCountAll({
+          include: {
+            model: UserPerson,
+            as: 'person',
+          },
+        });
+
+        return res.json(benefits);
+      } else if (role.toUpperCase() === 'COMPANY') {
+        const benefits = await Benefit.findAndCountAll({
+          include: {
+            model: Company,
+            as: 'company',
+          },
+        });
+
+        return res.json(benefits);
+      } else {
+        throw new Error('something went wrong');
+      }
     } catch (error) {
       ApiError.badRequest(error.message);
     }
   }
-  async getBenefits(req, res) {
+  async getAvailableBenefits(req, res) {
     try {
       const availableBenefits = await AvailableBenefit.findAll();
       return res.json(availableBenefits);

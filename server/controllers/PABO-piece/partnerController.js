@@ -1,7 +1,8 @@
 const {
   Partner,
   AvailablePartner,
-  PersonPartner,
+  UserPerson,
+  Company,
 } = require('../../models/models');
 const ApiError = require('../../error/ApiError');
 const uuid = require('uuid');
@@ -10,59 +11,99 @@ const path = require('path');
 class PartnerController {
   async createPartner(req, res) {
     try {
-      let { availablePartnerName, availablePartnerDescription } = req.body;
-      let { availablePartnerImg } = req.files;
+      let { availablerName, availableDescription } = req.body;
 
-      let fileName = `partner__${uuid.v4()}.png`;
+      let fileName;
 
-      availablePartnerImg.mv(
-        path.resolve(__dirname, '..', '..', 'static', 'partners', `${fileName}`)
-      );
+      if (req.files) {
+        let { availableImg } = req.files;
 
-      const newPartner = await AvailablePartner.create({
-        availablePartnerName,
-        availablePartnerDescription,
-        availablePartnerImg: fileName,
+        fileName = `partner__${uuid.v4()}.png`;
+
+        availableImg.mv(
+          path.resolve(
+            __dirname,
+            '..',
+            '..',
+            'static',
+            'partners',
+            `${fileName}`
+          )
+        );
+      }
+
+      const partner = await AvailablePartner.create({
+        available_partner_name: availablerName,
+        available_partner_description: availableDescription,
+        available_partner_img: fileName,
       });
 
-      return res.json(newPartner);
+      return res.json(partner);
     } catch (error) {
       ApiError.badRequest(error.message);
     }
   }
   async addPartner(req, res) {
     try {
-      const { id_target, id_user } = req.params;
+      let { name, personId, companyId } = req.body;
 
-      const { availablePartnerName, availablePartnerImg } =
-        await AvailablePartner.findOne({
-          where: { id_availablePartner: id_target },
-        });
+      let fileName;
 
-      const userPartner = await Partner.create({
-        partnerName: availablePartnerName,
-        partnerImg: availablePartnerImg,
+      if (req.files) {
+        let { img } = req.files;
+
+        fileName = `partner__${uuid.v4()}.png`;
+
+        img.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'partners', fileName)
+        );
+      }
+
+      const partner = await Partner.create({
+        partner_name: name,
+        partner_img: fileName,
       });
 
-      PersonPartner.create({
-        partnerIdPartner: userPartner.id_partner,
-        userPersonIdPerson: id_user,
-      });
+      if (companyId) {
+        await partner.addCompany(+companyId);
+      } else if (personId) {
+        await partner.addPerson(+personId);
+      } else {
+        throw new Error('something went wrong in partner controller');
+      }
 
-      return res.json(userPartner);
-    } catch (error) {
-      ApiError.badRequest(error.message);
-    }
-  }
-  async getMyPartners(req, res) {
-    try {
-      const myPartners = await Partner.findAll();
-      return res.json(myPartners);
+      return res.json(partner);
     } catch (error) {
       ApiError.badRequest(error.message);
     }
   }
   async getPartners(req, res) {
+    try {
+      const { role } = req.params;
+      if (role.toUpperCase() === 'PERSON') {
+        const partners = await Partner.findAndCountAll({
+          include: {
+            model: UserPerson,
+            as: 'person',
+          },
+        });
+
+        return res.json(partners);
+      } else if (role.toUpperCase() === 'COMPANY') {
+        const partners = await Partner.findAndCountAll({
+          include: {
+            model: Company,
+            as: 'company',
+          },
+        });
+
+        return res.json(partners);
+      }
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async getAvailablePartners(req, res) {
     try {
       const availablePartners = await AvailablePartner.findAll();
       return res.json(availablePartners);
