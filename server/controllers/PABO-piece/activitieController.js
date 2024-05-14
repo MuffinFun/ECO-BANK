@@ -1,4 +1,8 @@
-const { Activitie, AvailableActivitie } = require('../../models/models');
+const {
+  Activitie,
+  AvailableActivitie,
+  Company,
+} = require('../../models/models');
 const ApiError = require('../../error/ApiError');
 const uuid = require('uuid');
 const path = require('path');
@@ -28,19 +32,26 @@ class ActivitieController {
   }
   async addActivitie(req, res) {
     try {
-      let { activitieName } = req.body;
-      let { activitieImg } = req.files;
+      let { name } = req.body;
 
-      let fileName = `${uuid.v4()}.png`;
+      let fileName;
 
-      activitieImg.mv(
-        path.resolve(__dirname, '..', 'static', 'activities', fileName)
-      );
+      if (req.files) {
+        let { img } = req.files;
+
+        fileName = `activitie__${uuid.v4()}.png`;
+
+        img.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'activities', fileName)
+        );
+      }
 
       const activitie = await Activitie.create({
-        activitieName,
-        activitieImg: fileName,
+        activitie_name: name,
+        activitie_img: fileName,
       });
+
+      await Company.addCompany(activitie);
 
       return res.json(activitie);
     } catch (error) {
