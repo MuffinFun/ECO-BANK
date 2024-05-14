@@ -6,7 +6,6 @@ const {
   CreditCardInfo,
   CreditCardType,
 } = require('../../models/models');
-const { model } = require('../../db');
 
 class CreditCardController {
   async createCreditCard(req, res) {
