@@ -1,6 +1,6 @@
 const Router = require('express');
 const router = new Router();
-const faqController = require('../../controllers/FAQ/faqControllers');
+const faqController = require('../../controllers/FAQ/faqController');
 
 router.post('/', faqController.addFaqQuestion);
 router.get('/', faqController.getFAQ);
