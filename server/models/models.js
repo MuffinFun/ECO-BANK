@@ -12,9 +12,17 @@ const UserInfo = sequelize.define('user_info', {
     allowNull: false,
     validate: { len: [7, 20] },
   },
-  check_word: {
+  login: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
+  },
+  activation_link: {
+    type: DataTypes.STRING,
+  },
+  is_activated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
 });
 
