@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "diplom",
+      "group": "diplom-group",
+      "database": "dipl_test",
+      "username": "postgres"
+    }
+  ]
+}
