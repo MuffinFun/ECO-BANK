@@ -4,7 +4,7 @@ const path = require('path');
 const { Tax, TaxInfo } = require('../../models/models');
 
 class TaxController {
-  async createTax(req, res) {
+  async createTax(req, res, next) {
     try {
       const { name, price, autopay, checknum, operationCardName, personId } =
         req.body;
@@ -42,10 +42,10 @@ class TaxController {
 
       return res.json(tax);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getTax(req, res) {
+  async getTax(req, res, next) {
     try {
       const { taxId } = req.params;
       const tax = await Tax.findOne({
@@ -55,17 +55,17 @@ class TaxController {
 
       return res.json(tax);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getTaxes(req, res) {
+  async getTaxes(req, res, next) {
     try {
       const taxes = await Tax.findAll({
         include: { model: TaxInfo, as: 'tax_info' },
       });
       return res.json(taxes);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

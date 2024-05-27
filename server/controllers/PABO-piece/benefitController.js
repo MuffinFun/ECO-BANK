@@ -9,7 +9,7 @@ const uuid = require('uuid');
 const path = require('path');
 
 class BenefitController {
-  async createBenefit(req, res) {
+  async createBenefit(req, res, next) {
     try {
       let { availableName, availableDescription } = req.body;
 
@@ -33,10 +33,10 @@ class BenefitController {
 
       return res.json(benefit);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async addBenefit(req, res) {
+  async addBenefit(req, res, next) {
     try {
       let { name, personId, companyId } = req.body;
 
@@ -67,10 +67,10 @@ class BenefitController {
 
       return res.json(benefit);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getBenefits(req, res) {
+  async getBenefits(req, res, next) {
     try {
       const { role } = req.params;
       if (role.toUpperCase() === 'PERSON') {
@@ -95,15 +95,15 @@ class BenefitController {
         throw new Error('something went wrong');
       }
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getAvailableBenefits(req, res) {
+  async getAvailableBenefits(req, res, next) {
     try {
       const availableBenefits = await AvailableBenefit.findAll();
       return res.json(availableBenefits);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

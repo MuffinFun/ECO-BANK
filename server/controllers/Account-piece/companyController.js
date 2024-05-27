@@ -3,7 +3,7 @@ const ApiError = require('../../error/ApiError');
 const sequelize = require('sequelize');
 
 class companyController {
-  async createCompany(req, res) {
+  async createCompany(req, res, next) {
     try {
       const {
         companyName,
@@ -30,10 +30,10 @@ class companyController {
 
       return res.json([company]);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getCompanies(req, res) {
+  async getCompanies(req, res, next) {
     const company = await Company.findAll({
       include: { model: CompanyInfo, as: 'company_info' },
     });

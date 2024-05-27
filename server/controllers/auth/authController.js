@@ -1,58 +1,53 @@
-const { UserInfo } = require('../../models/models');
-const { user_token } = require('../../models');
-
+const userService = require('../../service/auth-services/userService');
 const ApiError = require('../../error/ApiError');
 
 class authController {
   async registration(req, res, next) {
     try {
-      const { login, password, activationLink, isActivated, refreshToken } =
-        req.body;
+      const { email, login, password } = req.body;
+      const userData = await userService.registration(login, email, password);
 
-      const info = await UserInfo.create({
-        login,
-        password,
-        activation_link: activationLink,
-        is_activated: isActivated,
+      res.cookie('refreshToken', userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
       });
 
-      const test = await user_token.create({
-        refresh_token: refreshToken,
-        user_info_id: info.id_user_info,
-      });
-      return res.send({ info, test });
+      return res.json(userData);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
   async login(req, res, next) {
     try {
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
   async logout(req, res, next) {
     try {
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
   async refresh(req, res, next) {
     try {
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
   async activate(req, res, next) {
     try {
+      const activationLink = req.params.link;
+      await userService.activate(activationLink);
+      res.redirect(process.env.CLIENT_URL);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
   async getUsers(req, res, next) {
     try {
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

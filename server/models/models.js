@@ -10,7 +10,6 @@ const UserInfo = sequelize.define('user_info', {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: { len: [7, 20] },
   },
   login: {
     type: DataTypes.STRING,

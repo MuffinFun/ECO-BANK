@@ -4,7 +4,7 @@ const path = require('path');
 const { Credit } = require('../../models/models');
 
 class CreditController {
-  async createCredit(req, res) {
+  async createCredit(req, res, next) {
     try {
       const { creditName, creditLimit, creditSum, personId } = req.body;
 
@@ -17,10 +17,10 @@ class CreditController {
 
       return res.json(credit);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getCredit(req, res) {
+  async getCredit(req, res, next) {
     try {
       const { creditId } = req.params;
       const credit = await Credit.findOne({
@@ -29,15 +29,15 @@ class CreditController {
 
       return res.json(credit);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getCredits(req, res) {
+  async getCredits(req, res, next) {
     try {
       const credits = await Credit.findAll();
       return res.json(credits);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

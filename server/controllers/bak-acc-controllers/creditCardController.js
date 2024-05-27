@@ -8,7 +8,7 @@ const {
 } = require('../../models/models');
 
 class CreditCardController {
-  async createCreditCard(req, res) {
+  async createCreditCard(req, res, next) {
     try {
       let { cardName, expiresDate, cvv, pincode, nfc, cardTypeName, bankId } =
         req.body;
@@ -74,10 +74,10 @@ class CreditCardController {
 
       return res.json(creditCard);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getCreditCard(req, res) {
+  async getCreditCard(req, res, next) {
     try {
       const { cardId } = req.params;
       const creditCard = await CreditCard.findOne({
@@ -90,10 +90,10 @@ class CreditCardController {
       });
       return res.json(creditCard);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getCreditCards(req, res) {
+  async getCreditCards(req, res, next) {
     try {
       const cards = await CreditCard.findAll({
         include: {
@@ -104,7 +104,7 @@ class CreditCardController {
       });
       return res.json(cards);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

@@ -4,7 +4,7 @@ const path = require('path');
 const { Bill, BillInfo } = require('../../models/models');
 
 class BillsController {
-  async createBill(req, res) {
+  async createBill(req, res, next) {
     try {
       const { name, price, autopay, checknum, operationCardName, personId } =
         req.body;
@@ -42,10 +42,10 @@ class BillsController {
 
       return res.json(bill);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getBill(req, res) {
+  async getBill(req, res, next) {
     try {
       const { billId } = req.params;
       const bill = await Bill.findOne({
@@ -55,17 +55,17 @@ class BillsController {
 
       return res.json(bill);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getBills(req, res) {
+  async getBills(req, res, next) {
     try {
       const bills = await Bill.findAll({
         include: { model: BillInfo, as: 'bill_info' },
       });
       return res.json(bills);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }
