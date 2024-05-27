@@ -14,7 +14,7 @@ class authController {
 
       return res.json(userData);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
   async login(req, res, next) {

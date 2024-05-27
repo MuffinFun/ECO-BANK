@@ -1,6 +1,5 @@
 const ApiError = require('../../error/ApiError');
 const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
 
 class EmailService {
   constructor() {
@@ -30,7 +29,7 @@ class EmailService {
         `,
       });
     } catch (error) {
-      throw new Error(error.message);
+      throw ApiError.badRequest(error.message);
     }
   }
 }

@@ -14,13 +14,13 @@ class UserService {
       const loginCandidate = await UserInfo.findOne({ where: { login } });
 
       if (emailCandidate) {
-        throw new Error(`User with email - ${email}, already exist!`);
+        throw ApiError.badRequest(`User with email - ${email}, already exist!`);
       } else if (loginCandidate) {
-        throw new Error(`This login already exist!`);
+        throw ApiError.badRequest(`This login already exist!`);
       }
 
       if (password.length < 7 || password.length > 20) {
-        throw new Error('password length must be in 7-20 letters');
+        throw ApiError.badRequest('password length must be in 7-20 letters');
       }
 
       const hashPassword = await bcrypt.hash(password, 3);
@@ -45,7 +45,7 @@ class UserService {
 
       return { ...tokens, userInfo: userDto };
     } catch (error) {
-      throw new Error(error.message);
+      throw ApiError.badRequest(error.message);
     }
   }
   async activate(activationLink) {
@@ -54,12 +54,12 @@ class UserService {
         where: { activation_link: activationLink },
       });
       if (!user) {
-        throw new Error('Uncorrect activation link!');
+        throw ApiError.badRequest('Uncorrect activation link!');
       }
       user.is_activated = true;
       await user.save();
     } catch (error) {
-      throw new Error(error.message);
+      throw ApiError.badRequest(error.message);
     }
   }
 }
