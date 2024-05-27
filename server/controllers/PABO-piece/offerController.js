@@ -4,7 +4,7 @@ const uuid = require('uuid');
 const path = require('path');
 
 class OfferController {
-  async createOffer(req, res) {
+  async createOffer(req, res, next) {
     let {
       offerName,
       offerType,
@@ -49,7 +49,7 @@ class OfferController {
 
     return res.json(offer);
   }
-  async getOffer(req, res) {
+  async getOffer(req, res, next) {
     const { offerId } = req.params;
     const offers = await Offer.findOne({
       where: { id_offer: offerId },
@@ -60,7 +60,7 @@ class OfferController {
     });
     return res.json(offers);
   }
-  async getOffers(req, res) {
+  async getOffers(req, res, next) {
     const { typeUserId, role } = req.params;
 
     if (role.toUpperCase() === 'PERSON') {

@@ -9,7 +9,7 @@ const uuid = require('uuid');
 const path = require('path');
 
 class ActivitieController {
-  async createActivitie(req, res) {
+  async createActivitie(req, res, next) {
     try {
       const { availableName, availableDescription } = req.body;
 
@@ -33,10 +33,10 @@ class ActivitieController {
 
       return res.json(activitie);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async addActivitie(req, res) {
+  async addActivitie(req, res, next) {
     try {
       let { name, personId, companyId } = req.body;
 
@@ -54,7 +54,7 @@ class ActivitieController {
 
       const activitie = await Activitie.create({
         activitie_name: name,
-        activitie_img: fileName,
+        activitie_img: fileName || 'none',
       });
 
       if (companyId) {
@@ -67,10 +67,10 @@ class ActivitieController {
 
       return res.json(activitie);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getActivities(req, res) {
+  async getActivities(req, res, next) {
     try {
       const { role } = req.params;
       if (role.toUpperCase() === 'PERSON') {
@@ -95,15 +95,15 @@ class ActivitieController {
         throw new Error('something went wrong');
       }
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getAvalableActivities(req, res) {
+  async getAvalableActivities(req, res, next) {
     try {
       const availableActivities = await AvailableActivitie.findAndCountAll();
       return res.json(availableActivities);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

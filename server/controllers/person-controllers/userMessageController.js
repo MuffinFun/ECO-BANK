@@ -3,7 +3,7 @@ const ApiError = require('../../error/ApiError');
 const { UserMessage } = require('../../models/models');
 
 class userMessageController {
-  async createMessage(req, res) {
+  async createMessage(req, res, next) {
     try {
       const { message, personId } = req.body;
 
@@ -14,10 +14,10 @@ class userMessageController {
 
       return res.json(userMessage);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getMessages(req, res) {
+  async getMessages(req, res, next) {
     try {
       const { personId, messageText } = req.params;
 
@@ -39,10 +39,10 @@ class userMessageController {
       });
       return res.json(message);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getAllMessages(req, res) {
+  async getAllMessages(req, res, next) {
     try {
       const { personId } = req.params;
 
@@ -52,7 +52,7 @@ class userMessageController {
 
       return res.json(messages);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

@@ -10,7 +10,6 @@ const UserInfo = sequelize.define('user_info', {
   password: {
     type: DataTypes.STRING,
     allowNull: false,
-    validate: { len: [7, 20] },
   },
   login: {
     type: DataTypes.STRING,
@@ -502,8 +501,8 @@ BankAccountBalance.belongsTo(BankAccount, {
   as: 'bank_balance',
 });
 
-BankAccount.hasMany(CreditCard, { foreignKey: 'bank_card_id' });
-CreditCard.belongsTo(BankAccount, { foreignKey: 'bank_card_id' });
+BankAccount.hasMany(CreditCard, { foreignKey: 'bank_id' });
+CreditCard.belongsTo(BankAccount, { foreignKey: 'bank_id' });
 
 CreditCard.hasOne(CreditCardInfo, {
   foreignKey: 'card_id',
@@ -523,8 +522,8 @@ CreditCardType.belongsTo(CreditCardInfo, {
   as: 'credit_card_type_info',
 });
 
-UserAccount.hasMany(Company, { foreignKey: 'user_company_id' });
-Company.belongsTo(Company, { foreignKey: 'user_company_id' });
+UserAccount.hasMany(Company, { foreignKey: 'account_id' });
+Company.belongsTo(Company, { foreignKey: 'account_id' });
 
 Company.hasOne(CompanyInfo, {
   foreignKey: 'company_id',

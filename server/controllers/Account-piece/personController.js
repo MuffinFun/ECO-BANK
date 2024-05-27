@@ -2,7 +2,7 @@ const { UserPerson } = require('../../models/models');
 const ApiError = require('../../error/ApiError');
 
 class personController {
-  async createPerson(req, res) {
+  async createPerson(req, res, next) {
     try {
       const {
         userSex,
@@ -30,7 +30,7 @@ class personController {
 
       return res.json(person);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

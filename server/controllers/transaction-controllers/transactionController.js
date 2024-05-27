@@ -2,7 +2,7 @@ const ApiError = require('../../error/ApiError');
 const { Transaction, TransactionInfo } = require('../../models/models');
 
 class transactionController {
-  async createTransaction(req, res) {
+  async createTransaction(req, res, next) {
     try {
       const {
         transactionType,
@@ -33,10 +33,10 @@ class transactionController {
 
       return res.json(transaction);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getTransaction(req, res) {
+  async getTransaction(req, res, next) {
     try {
       const { transactionId } = req.params;
 
@@ -47,10 +47,10 @@ class transactionController {
 
       return res.json(transaction);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getTransactions(req, res) {
+  async getTransactions(req, res, next) {
     try {
       const { typeUserId, role } = req.params;
 
@@ -70,7 +70,7 @@ class transactionController {
         throw new Error('something went wrong :(');
       }
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

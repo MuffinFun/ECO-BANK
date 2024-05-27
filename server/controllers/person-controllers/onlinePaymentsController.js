@@ -4,7 +4,7 @@ const path = require('path');
 const { OnlinePayment, OnlinePaymentInfo } = require('../../models/models');
 
 class OnlinePaymentController {
-  async createPayment(req, res) {
+  async createPayment(req, res, next) {
     try {
       const { name, price, autopay, checknum, operationCardName, personId } =
         req.body;
@@ -42,10 +42,10 @@ class OnlinePaymentController {
 
       return res.json(payment);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getPayment(req, res) {
+  async getPayment(req, res, next) {
     try {
       const { paymentId } = req.params;
       const payment = await OnlinePayment.findOne({
@@ -55,17 +55,17 @@ class OnlinePaymentController {
 
       return res.json(payment);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getPayments(req, res) {
+  async getPayments(req, res, next) {
     try {
       const payments = await OnlinePayment.findAll({
         include: { model: OnlinePaymentInfo, as: 'payment_info' },
       });
       return res.json(payments);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

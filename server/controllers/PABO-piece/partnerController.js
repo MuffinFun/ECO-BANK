@@ -9,7 +9,7 @@ const uuid = require('uuid');
 const path = require('path');
 
 class PartnerController {
-  async createPartner(req, res) {
+  async createPartner(req, res, next) {
     try {
       let { availablerName, availableDescription } = req.body;
 
@@ -40,10 +40,10 @@ class PartnerController {
 
       return res.json(partner);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async addPartner(req, res) {
+  async addPartner(req, res, next) {
     try {
       let { name, personId, companyId } = req.body;
 
@@ -74,10 +74,10 @@ class PartnerController {
 
       return res.json(partner);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getPartners(req, res) {
+  async getPartners(req, res, next) {
     try {
       const { role } = req.params;
       if (role.toUpperCase() === 'PERSON') {
@@ -100,15 +100,15 @@ class PartnerController {
         return res.json(partners);
       }
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getAvailablePartners(req, res) {
+  async getAvailablePartners(req, res, next) {
     try {
       const availablePartners = await AvailablePartner.findAll();
       return res.json(availablePartners);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

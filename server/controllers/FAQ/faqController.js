@@ -2,7 +2,7 @@ const ApiError = require('../../error/ApiError');
 const { Faq } = require('../../models/models');
 
 class faqController {
-  async addFaqQuestion(req, res) {
+  async addFaqQuestion(req, res, next) {
     try {
       const { question, answer } = req.body;
 
@@ -13,15 +13,15 @@ class faqController {
 
       return res.json(faq);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getFAQ(req, res) {
+  async getFAQ(req, res, next) {
     try {
       const faq = await Faq.findAndCountAll();
       return res.json(faq);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

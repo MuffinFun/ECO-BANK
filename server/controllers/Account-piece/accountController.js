@@ -4,17 +4,21 @@ const uuid = require('uuid');
 const path = require('path');
 
 class accountController {
-  async createAccount(req, res) {
+  async createAccount(req, res, next) {
     try {
       const { name, surName, thirdName, email, role } = req.body;
 
-      let { img } = req.files;
+      let filename;
 
-      const filename = `account__${uuid.v4()}.png`;
+      if (req.files) {
+        let { img } = req.files;
 
-      img.mv(
-        path.resolve(__dirname, '..', '..', 'static', 'accounts', filename)
-      );
+        filename = `account__${uuid.v4()}.png`;
+
+        img.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'accounts', filename)
+        );
+      }
 
       const account = await UserAccount.create({
         name,
@@ -27,15 +31,15 @@ class accountController {
 
       return res.json(account);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getAccounts(req, res) {
+  async getAccounts(req, res, next) {
     try {
       const accounts = await UserAccount.findAll();
       return res.json(accounts);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }

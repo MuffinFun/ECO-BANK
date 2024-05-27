@@ -4,7 +4,7 @@ const path = require('path');
 const { AccountFilling } = require('../../models/models');
 
 class FillController {
-  async createFill(req, res) {
+  async createFill(req, res, next) {
     try {
       const { fillName, fillPercentage, personId } = req.body;
 
@@ -16,10 +16,10 @@ class FillController {
 
       return res.json(fill);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getFill(req, res) {
+  async getFill(req, res, next) {
     try {
       const { fillId } = req.params;
 
@@ -29,16 +29,16 @@ class FillController {
 
       return res.json(fill);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
-  async getFillings(req, res) {
+  async getFillings(req, res, next) {
     try {
       const fillings = await AccountFilling.findAll();
 
       return res.json(fillings);
     } catch (error) {
-      ApiError.badRequest(error.message);
+      next(ApiError.badRequest(error.message));
     }
   }
 }
