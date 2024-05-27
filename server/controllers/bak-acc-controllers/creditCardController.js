@@ -13,39 +13,43 @@ class CreditCardController {
       let { cardName, expiresDate, cvv, pincode, nfc, cardTypeName, bankId } =
         req.body;
 
+      let fileNameCard, fileNameType;
+
+      if (req.files) {
+        let { cardImg, cardTypeImg } = req.files;
+
+        fileNameCard = `credit-card__${uuid.v4()}.png`;
+        fileNameType = `credit-card-type__${uuid.v4()}.png`;
+
+        cardTypeImg.mv(
+          path.resolve(
+            __dirname,
+            '..',
+            '..',
+            'static',
+            'credit-cards',
+            fileNameType
+          )
+        );
+        cardImg.mv(
+          path.resolve(
+            __dirname,
+            '..',
+            '..',
+            'static',
+            'credit-cards',
+            fileNameCard
+          )
+        );
+      }
+
       const expiresDateCorrect = new Date(expiresDate);
-
-      let { cardImg, cardTypeImg } = req.files;
-
-      let fileNameCard = `credit-card__${uuid.v4()}.png`;
-      let fileNameType = `credit-card-type__${uuid.v4()}.png`;
-
-      cardTypeImg.mv(
-        path.resolve(
-          __dirname,
-          '..',
-          '..',
-          'static',
-          'credit-cards',
-          fileNameType
-        )
-      );
-      cardImg.mv(
-        path.resolve(
-          __dirname,
-          '..',
-          '..',
-          'static',
-          'credit-cards',
-          fileNameCard
-        )
-      );
 
       const creditCard = await CreditCard.create(
         {
           card_name: cardName,
           card_img: fileNameCard,
-          bank_card_id: bankId,
+          bank_id: bankId,
           credit_card_info: {
             expires_date: expiresDateCorrect,
             cvv,

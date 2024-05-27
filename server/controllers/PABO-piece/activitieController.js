@@ -54,7 +54,7 @@ class ActivitieController {
 
       const activitie = await Activitie.create({
         activitie_name: name,
-        activitie_img: fileName,
+        activitie_img: fileName || 'none',
       });
 
       if (companyId) {

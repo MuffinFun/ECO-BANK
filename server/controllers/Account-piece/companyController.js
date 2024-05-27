@@ -17,7 +17,7 @@ class companyController {
       const company = await Company.create(
         {
           company_name: companyName,
-          user_company_id: idAccount,
+          account_id: idAccount,
           company_info: {
             company_adress: companyAdress,
             company_phone_number: companyPhoneNumber,

@@ -4,7 +4,7 @@ const { user_token } = require('../../models');
 const ApiError = require('../../error/ApiError');
 
 class authController {
-  async test(req, res) {
+  async registration(req, res, next) {
     try {
       const { login, password, activationLink, isActivated, refreshToken } =
         req.body;
@@ -21,6 +21,36 @@ class authController {
         user_info_id: info.id_user_info,
       });
       return res.send({ info, test });
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async login(req, res, next) {
+    try {
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async logout(req, res, next) {
+    try {
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async refresh(req, res, next) {
+    try {
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async activate(req, res, next) {
+    try {
+    } catch (error) {
+      ApiError.badRequest(error.message);
+    }
+  }
+  async getUsers(req, res, next) {
+    try {
     } catch (error) {
       ApiError.badRequest(error.message);
     }

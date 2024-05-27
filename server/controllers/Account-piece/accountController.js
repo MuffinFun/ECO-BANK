@@ -8,14 +8,18 @@ class accountController {
     try {
       const { name, surName, thirdName, email, role } = req.body;
 
-      let { img } = req.files;
+      let filename;
 
-      const filename = `account__${uuid.v4()}.png`;
+      if (req.files) {
+        let { img } = req.files;
 
-      img.mv(
-        path.resolve(__dirname, '..', '..', 'static', 'accounts', filename)
-      );
+        filename = `account__${uuid.v4()}.png`;
 
+        img.mv(
+          path.resolve(__dirname, '..', '..', 'static', 'accounts', filename)
+        );
+      }
+      
       const account = await UserAccount.create({
         name,
         sur_name: surName,
