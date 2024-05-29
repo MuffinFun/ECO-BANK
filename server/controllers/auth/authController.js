@@ -46,7 +46,7 @@ class authController {
       });
       return res.json(userData);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
   async logout(req, res, next) {
@@ -60,7 +60,7 @@ class authController {
         return res.json('logout has been succesfuly');
       }
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
   async refresh(req, res, next) {
@@ -74,7 +74,7 @@ class authController {
       });
       return res.json(userData);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
   async activate(req, res, next) {
@@ -83,13 +83,15 @@ class authController {
       await userService.activate(activationLink);
       res.redirect(process.env.CLIENT_URL);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
   async getUsers(req, res, next) {
     try {
+      const users = await userService.getAllUsers();
+      return res.json(users);
     } catch (error) {
-      next(ApiError.badRequest(error.message));
+      next(error);
     }
   }
 }
