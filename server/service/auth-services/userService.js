@@ -68,7 +68,7 @@ class UserService {
     if (!isPassEquals) {
       throw ApiError.badRequest('incorrect password');
     }
-    const userDto = new UserDto(user, email, role.toUpperCase());
+    const userDto = new UserDto(user, email, role);
 
     const tokens = tokenService.generateTokens({ ...userDto });
 

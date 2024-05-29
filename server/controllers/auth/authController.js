@@ -11,12 +11,18 @@ class authController {
         return next(ApiError.badRequest('validation error', errors.array()));
       }
 
-      const { email, login, password, role } = req.body;
+      const {
+        email,
+        login,
+        password,
+        role = process.env.DEFAULT_ROLE,
+      } = req.body;
+
       const userData = await userService.registration(
         login,
         email,
         password,
-        role.toUpperCase() || 'USER'
+        role
       );
 
       res.cookie('refreshToken', userData.refreshToken, {
@@ -31,14 +37,14 @@ class authController {
   }
   async login(req, res, next) {
     try {
-      const { login, password, email, role } = req.body;
-
-      const userData = await userService.login(
+      const {
         login,
         password,
         email,
-        role || 'USER'
-      );
+        role = process.env.DEFAULT_ROLE,
+      } = req.body;
+
+      const userData = await userService.login(login, password, email, role);
 
       res.cookie('refreshToken', userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
