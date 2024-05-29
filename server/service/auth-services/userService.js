@@ -106,6 +106,10 @@ class UserService {
 
     return { ...tokens, userInfo: userDto };
   }
+  async getAllUsers() {
+    const users = await UserInfo.findAll();
+    return users;
+  }
 }
 
 module.exports = new UserService();
